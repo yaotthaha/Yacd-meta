@@ -1,30 +1,79 @@
-name: Deploy
-
 on: [push]
-
+name: Deploy workflow
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  install:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [16.x]
+
     steps:
-      - name: Checkout Dashboard code
-        uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2
-        with:
-          version: latest
-      - name: Setup Nodejs
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: '17.x'
-          cache: pnpm
-      - name: Install package and build
-        run: |
-          pnpm install
-          pnpm build
-      - name: Deploy
-        uses: crazy-max/ghaction-github-pages@v2
+          node-version: ${{ matrix.node-version }}
+
+      - name: Cache pnpm modules
+        uses: actions/cache@v3
         with:
-          target_branch: gh-pages
-          build_dir: dist
-          fqdn: yacd.metacubex.one
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+      - uses: pnpm/action-setup@v2.2.1
+        with:
+          version: 7
+          run_install: true
+
+      - name: Lint
+        run: pnpm lint
+      - name: Build
+        run: pnpm build
+
+      - name: Create Release
+        if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/')
+        id: create_release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          draft: true
+          prerelease: false
+      - name: Create Tar Ball
+        if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/')
+        run: tar cJf yacd.tar.xz public
+      - name: Upload Release Asset
+        if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags/')
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./yacd.tar.xz
+          asset_name: yacd.tar.xz
+          asset_content_type: application/x-gzip
+
+      - name: Push to gh-pages
+        if: github.event_name == 'push' && (startsWith(github.event.ref, 'refs/tags/') || github.event.ref == 'refs/heads/publish')
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          PUBLISH_DIR: public
+          BRANCH: gh-pages
+        run: |
+          cd $PUBLISH_DIR
+          ls -l
+          git init
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@noreply.github.com"
+          git add .
+          git status
+          git commit -m "Push to gh-pages"
+          git push -f https://$GITHUB_ACTOR:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:$BRANCH
