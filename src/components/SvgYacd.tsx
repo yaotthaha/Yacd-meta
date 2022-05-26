@@ -17,9 +17,9 @@ function SvgYacd({
   width = 320,
   height = 320,
   animate = false,
-  c0 = 'currentColor',
+  c0 = '#316eb5',
   c1 = '#f19500',
-  line = '#eee',
+  line = '#cccccc',
 }: Props) {
   const faceClasName = cx({ [s.path]: animate });
   return (
