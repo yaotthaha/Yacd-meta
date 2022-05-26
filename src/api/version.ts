@@ -4,6 +4,7 @@ import { ClashAPIConfig } from 'src/types';
 type VersionData = {
   version?: string;
   premium?: boolean;
+  meta?: boolean;
 };
 
 export async function fetchVersion(

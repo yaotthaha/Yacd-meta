@@ -44,7 +44,7 @@ function getItemSizeFactory({ provider }) {
       return 90;
     }
     // rule
-    return 80;
+    return 60;
   };
 }
 

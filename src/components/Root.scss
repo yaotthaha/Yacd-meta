@@ -65,6 +65,23 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  ::-webkit-scrollbar {
+    z-index: 11;
+    background: transparent;
+
+    &-thumb {
+      border-radius: 5px;
+      background: #3b5f76;
+    }
+  }
+
+  ::-webkit-scrollbar:vertical {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar:horizontal {
+    height: 6px;
+  }
   margin: 0;
   padding: 0;
 }

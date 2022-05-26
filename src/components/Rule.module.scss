@@ -24,12 +24,13 @@
 .b {
   padding: 10px 0;
   font-family: 'Roboto Mono', Menlo, monospace;
-  font-size: 16px;
+  font-size: 12px;
   @media (--breakpoint-not-small) {
-    font-size: 19px;
+    font-size: 12px;
   }
 }
 
 .type {
   width: 110px;
+  color: #3b5f76;
 }

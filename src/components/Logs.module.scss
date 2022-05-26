@@ -5,6 +5,10 @@
   font-size: 0.9em;
 }
 
+.logCard {
+  margin-bottom: 15px;
+}
+
 .logType {
   color: #eee;
   flex-shrink: 0;
@@ -18,7 +22,7 @@
 .logTime {
   flex-shrink: 0;
   color: #999;
-  font-size: 14px;
+  font-size: 11px;
 }
 
 .logText {
@@ -36,8 +40,10 @@
 /*******************/
 
 .logsWrapper {
-  margin: 0;
-  padding: 0;
+  margin: 40px;
+  padding: 10px;
+  background-color: rgb(38, 38, 38);
+  border-radius: 4px;
   color: var(--color-text);
 
   :global {

@@ -40,6 +40,7 @@ type FormattedConn = {
   rule: string;
   destinationPort: string;
   destinationIP: string;
+  remoteDestination: string;
   sourceIP: string;
   sourcePort: string;
   source: string;
@@ -83,6 +84,7 @@ function formatConnectionDataItem(
     host,
     destinationPort,
     destinationIP,
+    remoteDestination,
     network,
     type,
     sourceIP,
@@ -99,14 +101,15 @@ function formatConnectionDataItem(
     download,
     start: now - new Date(start).valueOf(),
     chains: chains.reverse().join(' / '),
-    rule: !rulePayload ? rule : `${rule} (${rulePayload})`,
+    rule: !rulePayload ? rule : `${rule} :: ${rulePayload}`,
     ...metadata,
     host: `${host2}:${destinationPort}`,
     type: `${type}(${network})`,
     source: `${sourceIP}:${sourcePort}`,
     downloadSpeedCurr: download - (prev ? prev.download : 0),
     uploadSpeedCurr: upload - (prev ? prev.upload : 0),
-    process,
+    process: process? process : '-',
+    destinationIP: remoteDestination || destinationIP|| host,
   };
   return ret;
 }

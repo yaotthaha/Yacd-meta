@@ -18,6 +18,7 @@ export type ConnectionItem = {
     type: ConnType;
     sourceIP: string;
     destinationIP: string;
+    remoteDestination: string;
     sourcePort: string;
     destinationPort: string;
     host: string;

@@ -51,15 +51,15 @@ function AboutImpl(props: Props) {
       <ContentHeader title="About" />
       {version && version.version ? (
         <Version
-          name="Clash"
+          name={version.meta?'Clash.Meta':'Clash'}
           version={version.version}
-          link="https://github.com/yaling888/clash"
+          link="https://github.com/metacubex/clash.meta"
         />
       ) : null}
       <Version
         name="Yacd"
         version={__VERSION__}
-        link="https://github.com/yaling888/yacd"
+        link="https://github.com/metacubex/yacd"
       />
     </>
   );

@@ -21,26 +21,30 @@ const { useCallback, memo, useEffect } = React;
 
 const paddingBottom = 30;
 const colors = {
-  debug: '#28792c',
-  info: 'var(--bg-log-info-tag)',
-  warning: '#b99105',
+  debug: '#389d3d',
+  info: '#58c3f2',
+  warning: '#80037e',
   error: '#c11c1c',
+};
+
+const logTypes = {
+  debug: 'debug',
+  info: 'info',
+  warning: 'warn',
+  error: 'error',
 };
 
 type LogLineProps = Partial<Log>;
 
-function LogLine({ time, even, payload, type }: LogLineProps) {
-  const className = cx({ even }, 'log');
+function LogLine({ time, payload, type }: LogLineProps) {
   return (
-    <div className={className}>
-      <div className={s.logMeta}>
-        <div className={s.logTime}>{time}</div>
-        <div className={s.logType} style={{ backgroundColor: colors[type] }}>
-          {type}
-        </div>
-        <div className={s.logText}>{payload}</div>
-      </div>
-    </div>
+    <span className={s.logTime}>
+        <span className={s.logTime} style={{color: '#fb923c'}}>{time}</span>
+        <span className={s.logType} style={{ color: colors[type]}}>
+          [ {logTypes[type]} ]
+        </span>
+        <span className={s.logTime} >{payload}</span>
+      </span>
   );
 }
 
@@ -49,10 +53,10 @@ function itemKey(index: number, data: LogLineProps[]) {
   return item.id;
 }
 
-const Row = memo(({ index, style, data }: ListChildComponentProps<LogLineProps>) => {
+const Row = memo(({ index, data }: ListChildComponentProps<LogLineProps>) => {
   const r = data[index];
   return (
-    <div style={style}>
+    <div className={s.logCard} >
       <LogLine {...r} />
     </div>
   );
@@ -91,7 +95,7 @@ function Logs({ dispatch, logLevel, apiConfig, logs, logStreamingPaused }) {
               height={containerHeight - paddingBottom}
               width="100%"
               itemCount={logs.length}
-              itemSize={80}
+              itemSize={40}
               itemData={logs}
               itemKey={itemKey}
             >
