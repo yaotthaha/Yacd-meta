@@ -1,4 +1,3 @@
-import cx from 'clsx';
 import * as React from 'react';
 import { Pause, Play } from 'react-feather';
 import { useTranslation } from 'react-i18next';
