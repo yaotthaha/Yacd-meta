@@ -28,6 +28,8 @@ import { Selection2 } from './Selection';
 import { connect, useStoreActions } from './StateProvider';
 import Switch from './SwitchThemed';
 import TrafficChartSample from './TrafficChartSample';
+import { useQuery } from 'react-query';
+import { fetchVersion } from '$src/api/version';
 // import ToggleSwitch from './ToggleSwitch';
 
 const { useEffect, useState, useCallback, useRef } = React;
@@ -212,12 +214,12 @@ function ConfigImpl({
     dispatch(flushFakeIPPool(apiConfig));
   },[apiConfig, dispatch]);
 
+  const { data: version } = useQuery(['/version', apiConfig], () =>
+    fetchVersion('/version',apiConfig)
+  );
+
   const { t, i18n } = useTranslation();
 
-  // @ts-ignore
-  // @ts-ignore
-  // @ts-ignore
-  // @ts-ignore
   return (
     <div>
       <ContentHeader title={t('Config')} />
@@ -271,7 +273,7 @@ function ConfigImpl({
             />
           </div>
         </div>
-
+        { version.meta &&
         <div>
           <div className={s0.label}>{t('tls_sniffing')}</div>
           <div className={s0.wrapSwitch}>
@@ -283,14 +285,14 @@ function ConfigImpl({
                 }
             />
           </div>
-        </div>
+        </div>}
       </div>
 
       <div className={s0.sep}>
         <div />
       </div>
 
-      <div className={s0.section}>
+      {version.meta &&<div className={s0.section}>
         <div>
           <div className={s0.label}>{t('enable_tun_device')}</div>
           <div className={s0.wrapSwitch}>
@@ -313,12 +315,11 @@ function ConfigImpl({
               }
           />
         </div>
-      </div>
-
+      </div> &&
       <div className={s0.sep}>
         <div />
       </div>
-
+        &&
       <div className={s0.section}>
         <div>
           <div className={s0.label}>Reload</div>
@@ -328,7 +329,7 @@ function ConfigImpl({
               onClick={handleReloadConfigFile}
           />
         </div>
-
+        &&
         <div>
           <div className={s0.label}>GEO Databases</div>
           <Button
@@ -337,7 +338,7 @@ function ConfigImpl({
               onClick={handleUpdateGeoDatabasesFile}
           />
         </div>
-
+        &&
         <div>
           <div className={s0.label}>FakeIP</div>
           <Button
@@ -347,10 +348,11 @@ function ConfigImpl({
           />
         </div>
       </div>
-
+        &&
       <div className={s0.sep}>
         <div />
       </div>
+      }
 
       <div className={s0.section}>
         <div>
