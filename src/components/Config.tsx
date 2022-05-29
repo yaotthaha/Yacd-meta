@@ -287,12 +287,12 @@ function ConfigImpl({
           </div>
         </div>}
       </div>
-
-      <div className={s0.sep}>
+      <div className={s0.sep} >
         <div />
       </div>
-
-      {version.meta &&<div className={s0.section}>
+      { version.meta &&
+        <>
+      <div className={s0.section}>
         <div>
           <div className={s0.label}>{t('enable_tun_device')}</div>
           <div className={s0.wrapSwitch}>
@@ -304,7 +304,6 @@ function ConfigImpl({
             />
           </div>
         </div>
-
         <div>
           <div className={s0.label}>TUN IP Stack</div>
           <Select
@@ -315,44 +314,37 @@ function ConfigImpl({
               }
           />
         </div>
-      </div> &&
+      </div>
       <div className={s0.sep}>
         <div />
       </div>
-        &&
-      <div className={s0.section}>
-        <div>
-          <div className={s0.label}>Reload</div>
-          <Button
-              start={<RotateCw size={16} />}
-              label={t('reload_config_file')}
-              onClick={handleReloadConfigFile}
-          />
-        </div>
-        &&
-        <div>
-          <div className={s0.label}>GEO Databases</div>
-          <Button
-              start={<DownloadCloud size={16} />}
-              label={t('update_geo_databases_file')}
-              onClick={handleUpdateGeoDatabasesFile}
-          />
-        </div>
-        &&
-        <div>
-          <div className={s0.label}>FakeIP</div>
-          <Button
-              start={<Trash2 size={16} />}
-              label={t('flush_fake_ip_pool')}
-              onClick={handleFlushFakeIPPool}
-          />
-        </div>
-      </div>
-        &&
-      <div className={s0.sep}>
-        <div />
-      </div>
-      }
+          <div className={s0.section}>
+            <div>
+              <div className={s0.label}>Reload</div>
+              <Button
+                start={<RotateCw size={16} />}
+                label={t('reload_config_file')}
+                onClick={handleReloadConfigFile} />
+            </div>
+            <div>
+              <div className={s0.label}>GEO Databases</div>
+              <Button
+                start={<DownloadCloud size={16} />}
+                label={t('update_geo_databases_file')}
+                onClick={handleUpdateGeoDatabasesFile} />
+            </div>
+            <div>
+              <div className={s0.label}>FakeIP</div>
+              <Button
+                start={<Trash2 size={16} />}
+                label={t('flush_fake_ip_pool')}
+                onClick={handleFlushFakeIPPool} />
+            </div>
+          </div>
+          <div className={s0.sep}>
+            <div />
+          </div>
+        </>}
 
       <div className={s0.section}>
         <div>
