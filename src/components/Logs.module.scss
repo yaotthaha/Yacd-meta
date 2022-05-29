@@ -1,16 +1,8 @@
 .logMeta {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  font-size: 0.9em;
-}
-
-.logCard {
-  margin-bottom: 15px;
-}
+  font-size: 0.8em;
+ }
 
 .logType {
-  color: #eee;
   flex-shrink: 0;
   text-align: center;
   width: 66px;
@@ -21,20 +13,16 @@
 
 .logTime {
   flex-shrink: 0;
-  color: #999;
-  font-size: 11px;
+  color: #fb923c;
 }
 
 .logText {
   flex-shrink: 0;
-  display: flex;
-  font-family: 'Roboto Mono', Menlo, monospace;
+  color: #888;
   align-items: center;
   padding: 8px 0;
   /* force wrap */
   width: 100%;
-  white-space: pre;
-  overflow: auto;
 }
 
 /*******************/
@@ -48,11 +36,11 @@
 
   :global {
     .log {
-      padding: 10px 40px;
-      background: var(--color-background);
+      margin-bottom: 10px;
+      //background: var(--color-background);
     }
     .log.even {
-      background: var(--color-background);
+      //background: var(--color-background);
     }
   }
 }

@@ -37,12 +37,12 @@ type LogLineProps = Partial<Log>;
 
 function LogLine({ time, payload, type }: LogLineProps) {
   return (
-    <span className={s.logTime}>
-        <span className={s.logTime} style={{color: '#fb923c'}}>{time}</span>
+    <span className={s.logMeta}>
+        <span className={s.logTime} >{time}</span>
         <span className={s.logType} style={{ color: colors[type]}}>
           [ {logTypes[type]} ]
         </span>
-        <span className={s.logTime} >{payload}</span>
+        <span className={s.logText} >{payload}</span>
       </span>
   );
 }
@@ -52,10 +52,10 @@ function itemKey(index: number, data: LogLineProps[]) {
   return item.id;
 }
 
-const Row = memo(({ index, data }: ListChildComponentProps<LogLineProps>) => {
+const Row = memo(({ index, style, data }: ListChildComponentProps<LogLineProps>) => {
   const r = data[index];
   return (
-    <div className={s.logCard} >
+    <div style={style}>
       <LogLine {...r} />
     </div>
   );
@@ -80,7 +80,7 @@ function Logs({ dispatch, logLevel, apiConfig, logs, logStreamingPaused }) {
     <div>
       <ContentHeader title={t('Logs')} />
       <LogSearch />
-      <div ref={refLogsContainer} style={{ paddingBottom }}>
+      <div ref={refLogsContainer}>
         {logs.length === 0 ? (
           <div className={s.logPlaceholder} style={{ height: containerHeight - paddingBottom }}>
             <div className={s.logPlaceholderIcon}>
@@ -91,7 +91,7 @@ function Logs({ dispatch, logLevel, apiConfig, logs, logStreamingPaused }) {
         ) : (
           <div className={s.logsWrapper}>
             <List
-              height={containerHeight - paddingBottom}
+              height={containerHeight - paddingBottom*2.5}
               width="100%"
               itemCount={logs.length}
               itemSize={40}
