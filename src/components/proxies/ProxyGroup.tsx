@@ -45,7 +45,7 @@ function ProxyGroupImpl({
     proxies
   );
 
-  const isSelectable = useMemo(() => type === 'Selector', [type]);
+  const isSelectable = useMemo(() => ['Selector', 'Fallback'].includes(type) , [type]);
 
   const {
     app: { updateCollapsibleIsOpen },
