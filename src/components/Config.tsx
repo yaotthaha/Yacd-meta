@@ -214,6 +214,10 @@ function ConfigImpl({
 
   const { t, i18n } = useTranslation();
 
+  // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
   return (
     <div>
       <ContentHeader title={t('Config')} />
@@ -291,7 +295,7 @@ function ConfigImpl({
           <div className={s0.label}>{t('enable_tun_device')}</div>
           <div className={s0.wrapSwitch}>
             <Switch
-                checked={configState['tun']['enable']}
+                checked={configState['tun']?.enable}
                 onChange={(value: boolean) =>
                     handleChangeValue({ name: 'enable', value: value })
                 }
@@ -303,7 +307,7 @@ function ConfigImpl({
           <div className={s0.label}>TUN IP Stack</div>
           <Select
               options={tunStackOptions}
-              selected={configState['tun']['stack']}
+              selected={configState['tun']?.stack}
               onChange={(e) =>
                   handleChangeValue({ name: 'stack', value: e.target.value })
               }
