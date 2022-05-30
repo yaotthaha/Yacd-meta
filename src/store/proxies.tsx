@@ -37,6 +37,7 @@ export const NonProxyTypes = [
   'Direct',
   'Fallback',
   'Reject',
+  'Pass',
   'Selector',
   'URLTest',
   'LoadBalance',
