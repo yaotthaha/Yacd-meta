@@ -1,8 +1,8 @@
 .logMeta {
   font-size: 0.8em;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   display: block;
-  line-height: 1.7em;
+  line-height: 2em;
  }
 
 .logType {
@@ -23,7 +23,7 @@
   flex-shrink: 0;
   color: #888;
   align-items: center;
-  padding: 8px 0;
+  margin: -5px 0;
   /* force wrap */
   width: 100%;
 }
