@@ -41,7 +41,6 @@ function LogLine({ time, payload, type }: LogLineProps) {
         <span className={s.logType} style={{ color: colors[type]}}>
           [ {logTypes[type]} ]
         </span>
-        <br/>
         <span className={s.logText} >{payload}</span>
       </div>
   );

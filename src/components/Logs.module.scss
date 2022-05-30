@@ -26,18 +26,23 @@
   margin: -5px 0;
   /* force wrap */
   width: 100%;
+  @media (max-width: 768px) {
+    display: inline-block;
+  }
 }
 
 /*******************/
 
 .logsWrapper {
-  margin: 25px;
+  margin: 45px;
   padding: 10px;
   background-color: var(--bg-log-info-card);
   border-radius: 4px;
   color: var(--color-text);
   overflow-y: auto;
-
+  @media (max-width: 768px) {
+    margin: 25px;
+  }
   :global {
     .log {
       margin-bottom: 10px;
