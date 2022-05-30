@@ -33,7 +33,7 @@ export async function requestToSwitchProxy(apiConfig, name1, name2) {
 export async function requestDelayForProxy(
   apiConfig,
   name,
-  latencyTestUrl = 'http://www.gstatic.com/generate_204'
+  latencyTestUrl = 'http://www.gstatic.com/generate_202'
 ) {
   const { url, init } = getURLAndInit(apiConfig);
   const qs = `timeout=5000&url=${latencyTestUrl}`;
