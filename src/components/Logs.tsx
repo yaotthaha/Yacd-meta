@@ -67,7 +67,7 @@ function Logs({ dispatch, logLevel, apiConfig, logs, logStreamingPaused }) {
       <LogSearch />
       <div ref={refLogsContainer}>
         {logs.length === 0 ? (
-          <div className={s.logPlaceholder} style={{ height: containerHeight - paddingBottom }}>
+          <div className={s.logPlaceholder} style={{ height: containerHeight - paddingBottom*2 }}>
             <div className={s.logPlaceholderIcon}>
               <SvgYacd width={200} height={200} />
             </div>
