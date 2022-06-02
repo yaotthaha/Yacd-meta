@@ -19,6 +19,7 @@ const chartWrapperStyle = {
   // make chartjs chart responsive
   position: 'relative',
   maxWidth: 1000,
+  marginTop:"1em",
 };
 
 const mapState = (s: State) => ({

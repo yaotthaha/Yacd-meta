@@ -1,6 +1,6 @@
 // manage localStorage
 
-const StorageKey = 'yacd.haishan.me';
+const StorageKey = 'yacd.metacubex.one';
 
 function loadState() {
   try {
