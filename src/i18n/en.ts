@@ -43,7 +43,7 @@ export const data = {
   flush_fake_ip_pool: 'Flush fake-ip data',
   enable_tun_device: 'Enable TUN Device',
   allow_lan: 'Allow LAN',
-  tls_sniffing: 'TLS Sniffing',
+  tls_sniffing: 'Sniffer',
   c_host: 'Host',
   c_process: 'Process',
   c_dl: 'DL',

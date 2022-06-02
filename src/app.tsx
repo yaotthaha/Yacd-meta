@@ -22,6 +22,6 @@ root.render(
 swRegistration.register();
 
 // eslint-disable-next-line no-console
-console.log('Checkout the repo: https://github.com/yaling888/yacd');
+console.log('Checkout the repo: https://github.com/MetaCubeX/yacd');
 // eslint-disable-next-line
 console.log('Version:', __VERSION__);

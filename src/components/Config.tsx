@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { DownloadCloud, LogOut, RotateCw, Trash2 } from 'react-feather';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from 'react-query';
 import * as logsApi from 'src/api/logs';
 import Select from 'src/components/shared/Select';
 import { ClashGeneralConfig, DispatchFn, State } from 'src/store/types';
 import { ClashAPIConfig } from 'src/types';
+
+import { fetchVersion } from '$src/api/version';
 
 import {
   getClashAPIConfig,
@@ -28,9 +31,6 @@ import { Selection2 } from './Selection';
 import { connect, useStoreActions } from './StateProvider';
 import Switch from './SwitchThemed';
 import TrafficChartSample from './TrafficChartSample';
-import { useQuery } from 'react-query';
-import { fetchVersion } from '$src/api/version';
-// import ToggleSwitch from './ToggleSwitch';
 
 const { useEffect, useState, useCallback, useRef } = React;
 
@@ -45,8 +45,8 @@ const logLeveOptions = [
 ];
 
 const portFields = [
-  { key: 'port', label: 'HTTP Proxy Port' },
-  { key: 'socks-port', label: 'SOCKS5 Proxy Port' },
+  { key: 'port', label: 'Http Port' },
+  { key: 'socks-port', label: 'Socks5 Port' },
   { key: 'mixed-port', label: 'Mixed Port' },
   { key: 'redir-port', label: 'Redir Port' },
   { key: 'mitm-port', label: 'MITM Port' },
