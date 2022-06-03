@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { Zap } from 'react-feather';
+import { useQuery } from 'react-query';
+
+import { fetchVersion } from '$src/api/version';
 
 import {
   getCollapsibleIsOpen,
@@ -15,6 +18,7 @@ import s0 from './ProxyGroup.module.scss';
 import { ProxyList, ProxyListSummaryView } from './ProxyList';
 
 const { createElement, useCallback, useMemo, useState } = React;
+
 
 function ZapWrapper() {
   return (
@@ -45,7 +49,11 @@ function ProxyGroupImpl({
     proxies
   );
 
-  const isSelectable = useMemo(() => ['Selector', 'Fallback'].includes(type) , [type]);
+  const { data: version } = useQuery(['/version', apiConfig], () =>
+    fetchVersion('/version',apiConfig)
+  );
+
+  const isSelectable = useMemo(() => ['Selector', version.meta && 'Fallback'].includes(type) , [type]);
 
   const {
     app: { updateCollapsibleIsOpen },
