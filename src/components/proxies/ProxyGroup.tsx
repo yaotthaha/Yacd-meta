@@ -1,18 +1,17 @@
 import * as React from 'react';
 import { Zap } from 'react-feather';
 
-import {
-  getCollapsibleIsOpen,
-  getHideUnavailableProxies,
-  getProxySortBy,
-} from '../../store/app';
-import { getProxies, switchProxy } from '../../store/proxies';
+import * as proxiesAPI from '$src/api/proxies';
+import { getCollapsibleIsOpen, getHideUnavailableProxies, getProxySortBy } from '$src/store/app';
+import { getProxies, switchProxy } from '$src/store/proxies';
+
 import Button from '../Button';
 import CollapsibleSectionHeader from '../CollapsibleSectionHeader';
 import { connect, useStoreActions } from '../StateProvider';
 import { useFilteredAndSorted } from './hooks';
 import s0 from './ProxyGroup.module.scss';
 import { ProxyList, ProxyListSummaryView } from './ProxyList';
+
 
 const { createElement, useCallback, useMemo, useState } = React;
 
@@ -46,10 +45,9 @@ function ProxyGroupImpl({
   );
 
   const isSelectable = useMemo(() => ['Selector', 'Fallback'].includes(type) , [type]);
-
   const {
     app: { updateCollapsibleIsOpen },
-    proxies: { requestDelayForProxies },
+    // proxies: { requestDelayForProxyGroup },
   } = useStoreActions();
 
   const toggle = useCallback(() => {
@@ -63,15 +61,14 @@ function ProxyGroupImpl({
     },
     [apiConfig, dispatch, name, isSelectable]
   );
-
   const [isTestingLatency, setIsTestingLatency] = useState(false);
   const testLatency = useCallback(async () => {
     setIsTestingLatency(true);
     try {
-      await requestDelayForProxies(apiConfig, all);
+      await proxiesAPI.requestDelayForProxyGroup(apiConfig,name);
     } catch (err) {}
     setIsTestingLatency(false);
-  }, [all, apiConfig, requestDelayForProxies]);
+  }, [apiConfig, name]);
 
   return (
     <div className={s0.group}>

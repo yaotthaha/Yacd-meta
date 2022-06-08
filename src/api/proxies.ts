@@ -1,4 +1,5 @@
 import { getURLAndInit } from '../misc/request-helper';
+
 const endpoint = '/proxies';
 
 /*
@@ -39,6 +40,17 @@ export async function requestDelayForProxy(
   const qs = `timeout=5000&url=${latencyTestUrl}`;
   const fullURL = `${url}${endpoint}/${encodeURIComponent(name)}/delay?${qs}`;
   return await fetch(fullURL, init);
+}
+
+export async function requestDelayForProxyGroup(
+  apiConfig,
+  name,
+  latencyTestUrl = 'http://www.gstatic.com/generate_202'
+  ) {
+  const {url, init } = getURLAndInit(apiConfig);
+  const qs = `url=${latencyTestUrl}&timeout=2000`;
+  const fullUrl = `${url}/group/${encodeURIComponent(name)}/delay?${qs}`;
+  return await fetch(fullUrl,init);
 }
 
 export async function fetchProviderProxies(config) {
