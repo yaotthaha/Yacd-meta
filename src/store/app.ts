@@ -159,7 +159,7 @@ const defaultState: StateApp = {
   selectedClashAPIConfigIndex: 0,
   clashAPIConfigs: [defaultClashAPIConfig],
 
-  latencyTestUrl: 'http://www.gstatic.com/generate_202',
+  latencyTestUrl: 'http://www.gstatic.com/generate_204',
   selectedChartStyleIndex: 0,
   theme: 'dark',
 

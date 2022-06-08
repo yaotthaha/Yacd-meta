@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { Zap } from 'react-feather';
+import { useQuery } from 'react-query';
+
+import { fetchVersion } from '$src/api/version';
 
 import * as proxiesAPI from '$src/api/proxies';
 import { getCollapsibleIsOpen, getHideUnavailableProxies, getProxySortBy } from '$src/store/app';
@@ -14,6 +17,7 @@ import { ProxyList, ProxyListSummaryView } from './ProxyList';
 
 
 const { createElement, useCallback, useMemo, useState } = React;
+
 
 function ZapWrapper() {
   return (
@@ -44,7 +48,12 @@ function ProxyGroupImpl({
     proxies
   );
 
-  const isSelectable = useMemo(() => ['Selector', 'Fallback'].includes(type) , [type]);
+  const { data: version } = useQuery(['/version', apiConfig], () =>
+    fetchVersion('/version',apiConfig)
+  );
+
+  const isSelectable = useMemo(() => ['Selector', version.meta && 'Fallback'].includes(type) , [type]);
+
   const {
     app: { updateCollapsibleIsOpen },
     // proxies: { requestDelayForProxyGroup },
