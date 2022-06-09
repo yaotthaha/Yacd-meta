@@ -83,7 +83,7 @@ function ProxyGroupImpl({
     }
     catch (err) {}
     setIsTestingLatency(false);
-  }, [apiConfig, dispatch, name]);
+  }, [all, apiConfig, dispatch, name, version.meta]);
 
   return (
     <div className={s0.group}>
