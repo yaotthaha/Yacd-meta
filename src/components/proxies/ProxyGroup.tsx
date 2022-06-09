@@ -2,11 +2,10 @@ import * as React from 'react';
 import { Zap } from 'react-feather';
 import { useQuery } from 'react-query';
 
-import { fetchVersion } from '$src/api/version';
-
 import * as proxiesAPI from '$src/api/proxies';
+import { fetchVersion } from '$src/api/version';
 import { getCollapsibleIsOpen, getHideUnavailableProxies, getProxySortBy } from '$src/store/app';
-import { getProxies, switchProxy } from '$src/store/proxies';
+import { fetchProxies, getProxies, switchProxy } from '$src/store/proxies';
 
 import Button from '../Button';
 import CollapsibleSectionHeader from '../CollapsibleSectionHeader';
@@ -52,7 +51,7 @@ function ProxyGroupImpl({
     fetchVersion('/version',apiConfig)
   );
 
-  const isSelectable = useMemo(() => ['Selector', version.meta && 'Fallback'].includes(type) , [type]);
+  const isSelectable = useMemo(() => ['Selector', version.meta && 'Fallback'].includes(type) , [type, version.meta]);
 
   const {
     app: { updateCollapsibleIsOpen },
@@ -75,9 +74,10 @@ function ProxyGroupImpl({
     setIsTestingLatency(true);
     try {
       await proxiesAPI.requestDelayForProxyGroup(apiConfig,name);
+      await dispatch(fetchProxies(apiConfig));
     } catch (err) {}
     setIsTestingLatency(false);
-  }, [apiConfig, name]);
+  }, [apiConfig, dispatch, name]);
 
   return (
     <div className={s0.group}>
