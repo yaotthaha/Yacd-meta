@@ -73,9 +73,15 @@ function ProxyGroupImpl({
   const testLatency = useCallback(async () => {
     setIsTestingLatency(true);
     try {
-      await proxiesAPI.requestDelayForProxyGroup(apiConfig,name);
-      await dispatch(fetchProxies(apiConfig));
-    } catch (err) {}
+      if (version.meta==true){
+        await proxiesAPI.requestDelayForProxyGroup(apiConfig,name);
+        await dispatch(fetchProxies(apiConfig));}
+      else{
+        await proxiesAPI.requestDelayForProxy(apiConfig,all);
+        await dispatch(fetchProxies(apiConfig));
+      }
+    }
+    catch (err) {}
     setIsTestingLatency(false);
   }, [apiConfig, dispatch, name]);
 
