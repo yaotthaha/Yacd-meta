@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Pause, Play } from 'react-feather';
 import { useTranslation } from 'react-i18next';
-import { fetchLogs, reconnect as reconnectLogs,stop as stopLogs } from 'src/api/logs';
+import { areEqual, FixedSizeList as List, ListChildComponentProps } from 'react-window';
+import { fetchLogs, reconnect as reconnectLogs, stop as stopLogs } from 'src/api/logs';
 import ContentHeader from 'src/components/ContentHeader';
 import LogSearch from 'src/components/LogSearch';
 import { connect, useStoreActions } from 'src/components/StateProvider';

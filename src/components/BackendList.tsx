@@ -2,10 +2,7 @@ import cx from 'clsx';
 import * as React from 'react';
 import { Eye, EyeOff, X as Close } from 'react-feather';
 import { useToggle } from 'src/hooks/basic';
-import {
-  getClashAPIConfigs,
-  getSelectedClashAPIConfigIndex,
-} from 'src/store/app';
+import { getClashAPIConfigs, getSelectedClashAPIConfigIndex } from 'src/store/app';
 import { ClashAPIConfig } from 'src/types';
 
 import s from './BackendList.module.scss';
@@ -113,8 +110,6 @@ function Item({
       {secret ? (
         <>
           <span className={s.secret}>{show ? secret : '***'}</span>
-
-          {/* @ts-expect-error ts-migrate(2322) FIXME: Type 'boolean | (() => void)' is not assignable to... Remove this comment to see the full error message */}
           <Button onClick={toggle} className={s.eye}>
             <Icon size={20} />
           </Button>
@@ -137,11 +132,7 @@ function Button({
   disabled?: boolean;
 }) {
   return (
-    <button
-      disabled={disabled}
-      className={cx(className, s.btn)}
-      onClick={onClick}
-    >
+    <button disabled={disabled} className={cx(className, s.btn)} onClick={onClick}>
       {children}
     </button>
   );

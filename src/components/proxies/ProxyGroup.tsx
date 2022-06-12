@@ -1,30 +1,37 @@
+import Tooltip from '@reach/tooltip';
 import * as React from 'react';
-import { Zap } from 'react-feather';
-import { useQuery } from 'react-query';
 
-import * as proxiesAPI from '$src/api/proxies';
-import { fetchVersion } from '$src/api/version';
-import { getCollapsibleIsOpen, getHideUnavailableProxies, getProxySortBy } from '$src/store/app';
-import { fetchProxies, getProxies, switchProxy } from '$src/store/proxies';
+import { useState2 } from '$src/hooks/basic';
+import { DelayMapping, DispatchFn, ProxiesMapping, State } from '$src/store/types';
+import { ClashAPIConfig } from '$src/types';
 
+import { getCollapsibleIsOpen, getHideUnavailableProxies, getProxySortBy } from '../../store/app';
+import { fetchProxies, getProxies, switchProxy } from '../../store/proxies';
 import Button from '../Button';
 import CollapsibleSectionHeader from '../CollapsibleSectionHeader';
+import { ZapAnimated } from '../shared/ZapAnimated';
 import { connect, useStoreActions } from '../StateProvider';
 import { useFilteredAndSorted } from './hooks';
 import s0 from './ProxyGroup.module.scss';
 import { ProxyList, ProxyListSummaryView } from './ProxyList';
+import { fetchVersion } from '$src/api/version';
+import { useQuery } from 'react-query';
 
+const { createElement, useCallback, useMemo } = React;
 
-const { createElement, useCallback, useMemo, useState } = React;
-
-
-function ZapWrapper() {
-  return (
-    <div className={s0.zapWrapper}>
-      <Zap size={16} />
-    </div>
-  );
-}
+type ProxyGroupImplProps = {
+  name: string;
+  all: string[];
+  delay: DelayMapping;
+  hideUnavailableProxies: boolean;
+  proxySortBy: string;
+  proxies: ProxiesMapping;
+  type: string;
+  now: string;
+  isOpen: boolean;
+  apiConfig: ClashAPIConfig;
+  dispatch: DispatchFn;
+};
 
 function ProxyGroupImpl({
   name,
@@ -38,14 +45,8 @@ function ProxyGroupImpl({
   isOpen,
   apiConfig,
   dispatch,
-}) {
-  const all = useFilteredAndSorted(
-    allItems,
-    delay,
-    hideUnavailableProxies,
-    proxySortBy,
-    proxies
-  );
+}: ProxyGroupImplProps) {
+  const all = useFilteredAndSorted(allItems, delay, hideUnavailableProxies, proxySortBy, proxies);
 
   const { data: version } = useQuery(['/version', apiConfig], () =>
     fetchVersion('/version',apiConfig)
@@ -63,15 +64,17 @@ function ProxyGroupImpl({
   }, [isOpen, updateCollapsibleIsOpen, name]);
 
   const itemOnTapCallback = useCallback(
-    (proxyName) => {
+    (proxyName: string) => {
       if (!isSelectable) return;
       dispatch(switchProxy(apiConfig, name, proxyName));
     },
     [apiConfig, dispatch, name, isSelectable]
   );
-  const [isTestingLatency, setIsTestingLatency] = useState(false);
+
+  const testingLatency = useState2(false);
   const testLatency = useCallback(async () => {
-    setIsTestingLatency(true);
+    if (testingLatency.value) return;
+    testingLatency.set(true);
     try {
       if (version.meta==true){
         await proxiesAPI.requestDelayForProxyGroup(apiConfig,name);
@@ -87,7 +90,7 @@ function ProxyGroupImpl({
 
   return (
     <div className={s0.group}>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div className={s0.groupHead}>
         <CollapsibleSectionHeader
           name={name}
           type={type}
@@ -95,14 +98,13 @@ function ProxyGroupImpl({
           qty={all.length}
           isOpen={isOpen}
         />
-        <Button
-          title="Test latency"
-          kind="minimal"
-          onClick={testLatency}
-          isLoading={isTestingLatency}
-        >
-          <ZapWrapper />
-        </Button>
+        <div className={s0.action}>
+          <Tooltip label={'Test latency'}>
+            <Button kind="circular" onClick={testLatency}>
+              <ZapAnimated animate={testingLatency.value} size={16} />
+            </Button>
+          </Tooltip>
+        </div>
       </div>
       {createElement(isOpen ? ProxyList : ProxyListSummaryView, {
         all,
@@ -114,7 +116,7 @@ function ProxyGroupImpl({
   );
 }
 
-export const ProxyGroup = connect((s, { name, delay }) => {
+export const ProxyGroup = connect((s: State, { name, delay }) => {
   const proxies = getProxies(s);
   const collapsibleIsOpen = getCollapsibleIsOpen(s);
   const proxySortBy = getProxySortBy(s);
@@ -133,3 +135,7 @@ export const ProxyGroup = connect((s, { name, delay }) => {
     isOpen: collapsibleIsOpen[`proxyGroup:${name}`],
   };
 })(ProxyGroupImpl);
+function setIsTestingLatency (arg0: boolean) {
+    throw new Error('Function not implemented.');
+}
+

@@ -1,6 +1,8 @@
+import { TooltipPopup, useTooltip } from '@reach/tooltip';
 import cx from 'clsx';
 import * as React from 'react';
-import { keyCodes } from 'src/misc/keycode';
+
+import { State } from '$src/store/types';
 
 import { getDelay, getProxies, NonProxyTypes } from '../../store/proxies';
 import { connect } from '../StateProvider';
@@ -20,11 +22,7 @@ const colorMap = {
   na: '#909399',
 };
 
-function getLabelColor({
-  number,
-}: {
-  number?: number;
-} = {}) {
+function getLabelColor({ number }: { number?: number } = {}) {
   if (number === 0) {
     return colorMap.na;
   } else if (number < 200) {
@@ -37,39 +35,25 @@ function getLabelColor({
   return colorMap.na;
 }
 
-function getProxyDotBackgroundColor(
-  latency: {
-    number?: number;
-  },
-  proxyType: string
-) {
+function getProxyDotStyle(latency: { number?: number }, proxyType: string) {
   if (NonProxyTypes.indexOf(proxyType) > -1) {
-    return 'linear-gradient(135deg, white 15%, #999 15% 30%, white 30% 45%, #999 45% 60%, white 60% 75%, #999 75% 90%, white 90% 100%)';
+    return { border: '1px dotted #777' };
   }
-  return getLabelColor(latency);
+  const bg = getLabelColor(latency);
+  return { background: bg };
 }
 
 type ProxyProps = {
   name: string;
   now?: boolean;
   proxy: any;
-  latency: any;
+  latency?: { number?: number };
   isSelectable?: boolean;
   onClick?: (proxyName: string) => unknown;
 };
 
-function ProxySmallImpl({
-  now,
-  name,
-  proxy,
-  latency,
-  isSelectable,
-  onClick,
-}: ProxyProps) {
-  const color = useMemo(() => getProxyDotBackgroundColor(latency, proxy.type), [
-    latency,
-    proxy,
-  ]);
+function ProxySmallImpl({ now, name, proxy, latency, isSelectable, onClick }: ProxyProps) {
+  const style = useMemo(() => getProxyDotStyle(latency, proxy.type), [latency, proxy]);
   const title = useMemo(() => {
     let ret = name;
     if (latency && typeof latency.number === 'number') {
@@ -83,17 +67,12 @@ function ProxySmallImpl({
   }, [name, onClick, isSelectable]);
 
   const className = useMemo(() => {
-    return cx(s0.proxySmall, {
-      [s0.now]: now,
-      [s0.selectable]: isSelectable,
-    });
+    return cx(s0.proxySmall, { [s0.now]: now, [s0.selectable]: isSelectable });
   }, [isSelectable, now]);
 
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent) => {
-      if (e.keyCode === keyCodes.Enter) {
-        doSelect();
-      }
+      if (e.key === 'Enter') doSelect();
     },
     [doSelect]
   );
@@ -102,7 +81,7 @@ function ProxySmallImpl({
     <div
       title={title}
       className={className}
-      style={{ background: color }}
+      style={style}
       onClick={doSelect}
       onKeyDown={handleKeyDown}
       role={isSelectable ? 'menuitem' : ''}
@@ -115,33 +94,46 @@ function formatProxyType(t: string) {
   return t;
 }
 
-function ProxyImpl({
-  now,
-  name,
-  proxy,
-  latency,
-  isSelectable,
-  onClick,
-}: ProxyProps) {
+const positionProxyNameTooltip = (triggerRect: { left: number; top: number }) => {
+  return {
+    left: triggerRect.left + window.scrollX - 5,
+    top: triggerRect.top + window.scrollY - 38,
+  };
+};
+
+function ProxyNameTooltip({ children, label, 'aria-label': ariaLabel }) {
+  const [trigger, tooltip] = useTooltip();
+  return (
+    <>
+      {React.cloneElement(children, trigger)}
+      <TooltipPopup
+        {...tooltip}
+        label={label}
+        aria-label={ariaLabel}
+        position={positionProxyNameTooltip}
+      />
+    </>
+  );
+}
+
+function ProxyImpl({ now, name, proxy, latency, isSelectable, onClick }: ProxyProps) {
   const color = useMemo(() => getLabelColor(latency), [latency]);
   const doSelect = React.useCallback(() => {
     isSelectable && onClick && onClick(name);
   }, [name, onClick, isSelectable]);
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent) => {
-      if (e.keyCode === keyCodes.Enter) {
-        doSelect();
-      }
+      if (e.key === 'Enter') doSelect();
     },
     [doSelect]
   );
   const className = useMemo(() => {
     return cx(s0.proxy, {
       [s0.now]: now,
-      [s0.error]: latency && latency.error,
+      // [s0.error]: latency && latency.error,
       [s0.selectable]: isSelectable,
     });
-  }, [isSelectable, now, latency]);
+  }, [isSelectable, now]);
 
   return (
     <div
@@ -151,26 +143,26 @@ function ProxyImpl({
       onKeyDown={handleKeyDown}
       role={isSelectable ? 'menuitem' : ''}
     >
-      <div className={s0.proxyName}>{name}</div>
+      <div className={s0.proxyName}>
+        <ProxyNameTooltip label={name} aria-label={'proxy name: ' + name}>
+          <span>{name}</span>
+        </ProxyNameTooltip>
+      </div>
       <div className={s0.row}>
         <span className={s0.proxyType} style={{ opacity: now ? 0.6 : 0.2 }}>
           {formatProxyType(proxy.type)}
         </span>
-        {latency && latency.number ? (
-          <ProxyLatency number={latency.number} color={color} />
-        ) : null}
+        <ProxyLatency number={latency?.number} color={color} />
       </div>
     </div>
   );
 }
 
-const mapState = (s: any, { name }) => {
+const mapState = (s: State, { name }) => {
   const proxies = getProxies(s);
   const delay = getDelay(s);
-  return {
-    proxy: proxies[name],
-    latency: delay[name],
-  };
+  const proxy = proxies[name] || { name, type: 'Unknown', history: [] };
+  return { proxy, latency: delay[name] };
 };
 
 export const Proxy = connect(mapState)(ProxyImpl);
