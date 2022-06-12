@@ -7,8 +7,21 @@ import Select from 'src/components/shared/Select';
 import { ClashGeneralConfig, DispatchFn, State } from 'src/store/types';
 import { ClashAPIConfig } from 'src/types';
 
-import { getClashAPIConfig, getLatencyTestUrl, getSelectedChartStyleIndex } from '../store/app';
-import { fetchConfigs, getConfigs, updateConfigs } from '../store/configs';
+import { fetchVersion } from '$src/api/version';
+
+import {
+  getClashAPIConfig,
+  getLatencyTestUrl,
+  getSelectedChartStyleIndex,
+} from '../store/app';
+import {
+  fetchConfigs,
+  flushFakeIPPool,
+  getConfigs,
+  reloadConfigFile,
+  updateConfigs,
+  updateGeoDatabasesFile,
+} from '../store/configs';
 import { openModal } from '../store/modals';
 import Button from './Button';
 import s0 from './Config.module.scss';
@@ -106,7 +119,7 @@ function ConfigImpl({
   }, [dispatch]);
 
   const setConfigState = useCallback(
-    (name: keyof ClashGeneralConfig, val: ClashGeneralConfig[keyof ClashGeneralConfig]) => {
+    (name, val) => {
       setConfigStateInternal({ ...configState, [name]: val });
     },
     [configState]
@@ -156,14 +169,14 @@ function ConfigImpl({
     [apiConfig, dispatch, setConfigState, setTunConfigState]
   );
 
-  const handleInputOnChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
+  const handleInputOnChange = useCallback(
     (e) => handleChangeValue(e.target),
     [handleChangeValue]
   );
 
   const { selectChartStyleIndex, updateAppConfig } = useStoreActions();
 
-  const handleInputOnBlur = useCallback<React.FocusEventHandler<HTMLInputElement>>(
+  const handleInputOnBlur = useCallback(
     (e) => {
       const target = e.target;
       const { name, value } = target;
@@ -219,6 +232,7 @@ function ConfigImpl({
                 name={f.key}
                 value={configState[f.key]}
                 onChange={handleInputOnChange}
+                // @ts-expect-error ts-migrate(2322) FIXME: Type '{ name: string; value: any; onChange: (e: an... Remove this comment to see the full error message
                 onBlur={handleInputOnBlur}
               />
             </div>
@@ -229,8 +243,10 @@ function ConfigImpl({
           <div className={s0.label}>Mode</div>
           <Select
             options={modeOptions}
-            selected={mode}
-            onChange={(e) => handleChangeValue({ name: 'mode', value: e.target.value })}
+            selected={configState['mode']}
+            onChange={(e) =>
+              handleChangeValue({ name: 'mode', value: e.target.value })
+            }
           />
         </div>
 
@@ -239,4 +255,137 @@ function ConfigImpl({
           <Select
             options={logLeveOptions}
             selected={configState['log-level']}
-            onChange={(e) => handleChangeValue({ name: 'log-level', value: e.target.value })}
+            onChange={(e) =>
+              handleChangeValue({ name: 'log-level', value: e.target.value })
+            }
+          />
+        </div>
+
+        <div>
+          <div className={s0.label}>{t('allow_lan')}</div>
+          <div className={s0.wrapSwitch}>
+            <Switch
+              name="allow-lan"
+              checked={configState['allow-lan']}
+              onChange={(value: boolean) =>
+                handleChangeValue({ name: 'allow-lan', value: value })
+              }
+            />
+          </div>
+        </div>
+        { version.meta &&
+        <div>
+          <div className={s0.label}>{t('tls_sniffing')}</div>
+          <div className={s0.wrapSwitch}>
+            <Switch
+                name="sniffing"
+                checked={configState['sniffing']}
+                onChange={(value: boolean) =>
+                  handleChangeValue({ name: 'sniffing', value: value })
+                }
+            />
+          </div>
+        </div>}
+      </div>
+      <div className={s0.sep} >
+        <div />
+      </div>
+      { version.meta &&
+        <>
+      <div className={s0.section}>
+        <div>
+          <div className={s0.label}>{t('enable_tun_device')}</div>
+          <div className={s0.wrapSwitch}>
+            <Switch
+                checked={configState['tun']?.enable}
+                onChange={(value: boolean) =>
+                    handleChangeValue({ name: 'enable', value: value })
+                }
+            />
+          </div>
+        </div>
+        <div>
+          <div className={s0.label}>TUN IP Stack</div>
+          <Select
+              options={tunStackOptions}
+              selected={configState['tun']?.stack}
+              onChange={(e) =>
+                  handleChangeValue({ name: 'stack', value: e.target.value })
+              }
+          />
+        </div>
+      </div>
+      <div className={s0.sep}>
+        <div />
+      </div>
+          <div className={s0.section}>
+            <div>
+              <div className={s0.label}>Reload</div>
+              <Button
+                start={<RotateCw size={16} />}
+                label={t('reload_config_file')}
+                onClick={handleReloadConfigFile} />
+            </div>
+            <div>
+              <div className={s0.label}>GEO Databases</div>
+              <Button
+                start={<DownloadCloud size={16} />}
+                label={t('update_geo_databases_file')}
+                onClick={handleUpdateGeoDatabasesFile} />
+            </div>
+            <div>
+              <div className={s0.label}>FakeIP</div>
+              <Button
+                start={<Trash2 size={16} />}
+                label={t('flush_fake_ip_pool')}
+                onClick={handleFlushFakeIPPool} />
+            </div>
+          </div>
+          <div className={s0.sep}>
+            <div />
+          </div>
+        </>}
+
+      <div className={s0.section}>
+        <div>
+          <div className={s0.label}>{t('latency_test_url')}</div>
+          <SelfControlledInput
+            name="latencyTestUrl"
+            type="text"
+            value={latencyTestUrl}
+            onBlur={handleInputOnBlur}
+          />
+        </div>
+        <div>
+          <div className={s0.label}>{t('lang')}</div>
+          <div>
+            <Select
+              options={langOptions}
+              selected={i18n.language}
+              onChange={(e) => i18n.changeLanguage(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div>
+          <div className={s0.label}>{t('chart_style')}</div>
+          <Selection2
+            OptionComponent={TrafficChartSample}
+            optionPropsList={propsList}
+            selectedIndex={selectedChartStyleIndex}
+            onChange={selectChartStyleIndex}
+          />
+        </div>
+
+        <div>
+          <div className={s0.label}>Action</div>
+          <Button
+            start={<LogOut size={16} />}
+            label="Switch backend"
+            onClick={openAPIConfigModal}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}

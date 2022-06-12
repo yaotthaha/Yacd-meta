@@ -13,7 +13,6 @@
 
 .middle {
   display: grid;
-  gap: 6px;
   grid-template-rows: 1fr auto auto;
   align-items: center;
 }
@@ -22,13 +21,13 @@
   color: #777;
 }
 
-.action {
+.refreshButtonWrapper {
   display: grid;
-  gap: 4px;
-  grid-template-columns: auto 1fr;
-  align-items: center;
+  place-items: center;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 
-.refreshBtn {
-  padding: 5px;
+.RuleProviderItem:hover .refreshButtonWrapper {
+  opacity: 1;
 }

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { areEqual, VariableSizeList } from 'react-window';
 import { RuleProviderItem } from 'src/components/rules/RuleProviderItem';
@@ -7,7 +7,7 @@ import { RulesPageFab } from 'src/components/rules/RulesPageFab';
 import { TextFilter } from 'src/components/shared/TextFitler';
 import { ruleFilterText } from 'src/store/rules';
 import { State } from 'src/store/types';
-import { ClashAPIConfig, RuleType } from 'src/types';
+import { ClashAPIConfig } from 'src/types';
 
 import useRemainingViewPortHeight from '../hooks/useRemainingViewPortHeight';
 import { getClashAPIConfig } from '../store/app';
@@ -41,24 +41,15 @@ function getItemSizeFactory({ provider }) {
     const providerQty = provider.names.length;
     if (idx < providerQty) {
       // provider
-      return 110;
+      return 90;
     }
     // rule
     return 60;
   };
 }
 
-type RowProps = {
-  index: number;
-  style: React.CSSProperties;
-  data: {
-    apiConfig: ClashAPIConfig;
-    rules: RuleType[];
-    provider: { names: string[]; byName: any };
-  };
-};
-
-const Row = memo(({ index, style, data }: RowProps) => {
+// @ts-expect-error ts-migrate(2339) FIXME: Property 'index' does not exist on type '{ childre... Remove this comment to see the full error message
+const Row = memo(({ index, style, data }) => {
   const { rules, provider, apiConfig } = data;
   const providerQty = provider.names.length;
 

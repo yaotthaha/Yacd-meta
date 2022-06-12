@@ -25,7 +25,12 @@ function RuleSearch({ dispatch, searchText, updateSearchText }) {
     <div className={s0.RuleSearch}>
       <div className={s0.RuleSearchContainer}>
         <div className={s0.inputWrapper}>
-          <input type="text" value={text} onChange={onChange} className={s0.input} />
+          <input
+            type="text"
+            value={text}
+            onChange={onChange}
+            className={s0.input}
+          />
         </div>
         <div className={s0.iconWrapper}>
           <SearchIcon size={20} />

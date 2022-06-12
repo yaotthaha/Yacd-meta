@@ -8,7 +8,10 @@ const allLocales = {
   en: import('src/i18n/en'),
 };
 
-type BackendRequestCallback = (err: null, result: { status: number; data: any }) => void;
+type BackendRequestCallback = (
+  err: null,
+  result: { status: number; data: any }
+) => void;
 
 i18next
   .use(HttpBackend)

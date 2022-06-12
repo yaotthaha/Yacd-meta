@@ -2,12 +2,10 @@
   margin-bottom: 12px;
 }
 
-.groupHead {
+.zapWrapper {
+  width: 20px;
+  height: 20px;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-}
-
-.action {
-  margin: 0 5px;
+  justify-content: center;
 }

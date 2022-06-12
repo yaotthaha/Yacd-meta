@@ -11,7 +11,12 @@ type ProxyListProps = {
   show?: boolean;
 };
 
-export function ProxyList({ all, now, isSelectable, itemOnTapCallback }: ProxyListProps) {
+export function ProxyList({
+  all,
+  now,
+  isSelectable,
+  itemOnTapCallback,
+}: ProxyListProps) {
   const proxies = all;
 
   return (

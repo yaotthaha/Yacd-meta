@@ -7,8 +7,7 @@ const { useState, useRef, useEffect, useCallback } = React;
 type InputProps = {
   value?: string | number;
   type?: string;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  onChange?: (...args: any[]) => any;
   name?: string;
   placeholder?: string;
 };
@@ -27,7 +26,17 @@ export function SelfControlledInput({ value, ...restProps }) {
     }
     refValue.current = value;
   }, [value]);
-  const onChange = useCallback((e) => setInternalValue(e.target.value), [setInternalValue]);
+  const onChange = useCallback(
+    (e) => setInternalValue(e.target.value),
+    [setInternalValue]
+  );
 
-  return <input className={s0.input} value={internalValue} onChange={onChange} {...restProps} />;
+  return (
+    <input
+      className={s0.input}
+      value={internalValue}
+      onChange={onChange}
+      {...restProps}
+    />
+  );
 }
