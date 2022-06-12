@@ -23,16 +23,16 @@
     transform: scale(0.97);
   }
 
-  font-size: 0.75em;
-  padding: 4px 7px;
-  @media (--breakpoint-not-small) {
-    font-size: small;
-    padding: 6px 12px;
+  padding: 10px 13px;
+
+  &.circular {
+    padding: 8px;
   }
 
   &.minimal {
     border-color: transparent;
     background: none;
+    padding: 6px 12px;
     &:focus {
       border-color: var(--color-focus-blue);
     }
