@@ -1,6 +1,7 @@
 import cx from 'clsx';
 import * as React from 'react';
 import { keyCodes } from 'src/misc/keycode';
+import { TooltipPopup, useTooltip } from '@reach/tooltip';
 
 import { getDelay, getProxies, NonProxyTypes } from '../../store/proxies';
 import { connect } from '../StateProvider';
@@ -114,7 +115,27 @@ function formatProxyType(t: string) {
   if (t === 'Shadowsocks') return 'SS';
   return t;
 }
+const positionProxyNameTooltip = (triggerRect: { left: number; top: number }) => {
+  return {
+    left: triggerRect.left + window.scrollX - 5,
+    top: triggerRect.top + window.scrollY - 38,
+  };
+};
 
+function ProxyNameTooltip({ children, label, 'aria-label': ariaLabel }) {
+  const [trigger, tooltip] = useTooltip();
+  return (
+    <>
+      {React.cloneElement(children, trigger)}
+      <TooltipPopup
+        {...tooltip}
+        label={label}
+        aria-label={ariaLabel}
+        position={positionProxyNameTooltip}
+      />
+    </>
+  );
+}
 function ProxyImpl({
   now,
   name,
@@ -151,7 +172,11 @@ function ProxyImpl({
       onKeyDown={handleKeyDown}
       role={isSelectable ? 'menuitem' : ''}
     >
-      <div className={s0.proxyName}>{name}</div>
+     <div className={s0.proxyName}>
+        <ProxyNameTooltip label={name} aria-label={'proxy name: ' + name}>
+          <span>{name}</span>
+        </ProxyNameTooltip>
+      </div>
       <div className={s0.row}>
         <span className={s0.proxyType} style={{ opacity: now ? 0.6 : 0.2 }}>
           {formatProxyType(proxy.type)}
