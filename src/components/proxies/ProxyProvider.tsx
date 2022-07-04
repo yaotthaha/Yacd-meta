@@ -75,13 +75,25 @@ function ProxyProviderImpl({
   const timeAgo = formatDistance(new Date(updatedAt), new Date());
   return (
     <div className={s.body}>
-      <CollapsibleSectionHeader
-        name={name}
-        toggle={toggle}
-        type={vehicleType}
-        isOpen={isOpen}
-        qty={proxies.length}
-      />
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <CollapsibleSectionHeader
+            name={name}
+            toggle={toggle}
+            type={vehicleType}
+            isOpen={isOpen}
+            qty={proxies.length}
+        />
+        <Button
+            kind="minimal"
+            start={<Refresh />}
+            onClick={updateProvider} />
+        <Button
+            kind="minimal"
+            start={<Zap size={16} />}
+            onClick={healthcheckProvider}
+            isLoading={isHealthcheckLoading}
+        />
+      </div>
       <div className={s.updatedAt}>
         <small>Updated {timeAgo} ago</small>
       </div>
