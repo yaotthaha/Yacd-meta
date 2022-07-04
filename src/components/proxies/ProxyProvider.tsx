@@ -75,7 +75,7 @@ function ProxyProviderImpl({
   const timeAgo = formatDistance(new Date(updatedAt), new Date());
   return (
     <div className={s.body}>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
         <CollapsibleSectionHeader
             name={name}
             toggle={toggle}
