@@ -37,16 +37,15 @@ const variantsCollpapsibleWrap = {
     height: 0,
     opacity: 0,
     visibility: 'hidden',
+    overflowY: 'hidden',
     transition: { duration: 0.3 },
   },
 };
 
 const variantsCollpapsibleChildContainer = {
   open: {
-    x: 0,
   },
   closed: {
-    x: 20,
   },
 };
 
