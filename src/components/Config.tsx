@@ -65,8 +65,8 @@ const modeOptions = [
 ];
 
 const tunStackOptions = [
-  ['gVisor', 'gVisor'],
-  ['System', 'System'],
+  ['gvisor', 'gVisor'],
+  ['system', 'System'],
 ];
 
 const mapState = (s: State) => ({
