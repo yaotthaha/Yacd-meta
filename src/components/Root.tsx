@@ -40,7 +40,7 @@ const routes = [
   { path: '/proxies', element: <Proxies /> },
   { path: '/rules', element: <Rules /> },
   { path: '/about', element: <About /> },
-  process.env.NODE_ENV === 'development' ? { path: '/style', element: <StyleGuide /> } : false,
+  process.env.NODE_ENV === 'development' ? { path: '/style', element: <StyleGuide /> } : false
 ].filter(Boolean) as RouteObject[];
 
 function RouteInnerApp() {
@@ -64,7 +64,7 @@ function SideBarApp() {
 function App() {
   return useRoutes([
     { path: '/backend', element: <APIConfig /> },
-    { path: '*', element: <SideBarApp /> },
+    { path: '*', element: <SideBarApp /> }
   ]);
 }
 
@@ -88,3 +88,59 @@ const Root = () => (
 );
 
 export default Root;
+
+
+
+window.onload = function startup() {
+  const el = document.getElementById('app');
+  el.addEventListener('touchstart', onTouchStart, false);
+  el.addEventListener('touchmove', onTouchMove, false);
+  el.addEventListener('touchend', onTouchEnd, false);
+};
+
+
+const touchData = { touching: false, trace: [] };
+
+function onTouchStart(evt) {
+  if (evt.touches.length !== 1) {
+    touchData.touching = false;
+    touchData.trace = [];
+    return;
+  }
+  touchData.touching = true;
+  touchData.trace = [{ x: evt.touches[0].screenX, y: evt.touches[0].screenY }];
+}
+
+
+function onTouchMove(evt) {
+  if (!touchData.touching) return;
+  touchData.trace.push({
+    x: evt.touches[0].screenX,
+    y: evt.touches[0].screenY
+  });
+}
+
+function onTouchEnd() {
+  if (!touchData.touching) return;
+  const trace = touchData.trace;
+  touchData.touching = false;
+  touchData.trace = [];
+  handleTouch(trace);  //判断touch类型并调用适当回调
+}
+function handleTouch(trace) {
+  const tags = ['/','/proxies','/rules','/connections','/configs','/logs']
+  const start = trace[0];
+  const end = trace[trace.length - 1];
+  const tag =  window.location.hash.slice(1)
+  const index = tags.indexOf(tag)
+  console.log(index,tag,tags.length)
+  if (index === 3) return;
+  if (end.x - start.x > 200 && index > 0) {
+     window.location.hash=tags[index-1];
+  }else if (end.x - start.x < -200 && index < tags.length-1) {
+     window.location.hash=tags[index+1];
+    if (index === -1){
+      window.location.hash=tags[index+2]
+    }
+      }
+};
