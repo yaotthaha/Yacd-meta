@@ -67,6 +67,7 @@ const modeOptions = [
 const tunStackOptions = [
   ['gvisor', 'gVisor'],
   ['system', 'System'],
+  ['lwip', 'LWIP'],
 ];
 
 const mapState = (s: State) => ({
@@ -308,7 +309,7 @@ function ConfigImpl({
           <div className={s0.label}>TUN IP Stack</div>
           <Select
               options={tunStackOptions}
-              selected={configState['tun']?.stack}
+              selected={configState['tun']?.stack.toLowerCase()}
               onChange={(e) =>
                   handleChangeValue({ name: 'stack', value: e.target.value })
               }
