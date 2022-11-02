@@ -120,14 +120,14 @@ function ConfigImpl({
   }, [dispatch]);
 
   const setConfigState = useCallback(
-    (name, val) => {
+    (name: any, val: any) => {
       setConfigStateInternal({ ...configState, [name]: val });
     },
     [configState]
   );
 
   const setTunConfigState = useCallback(
-      (name, val) => {
+      (name: any, val: any) => {
         const tun = {...configState.tun, [name]: val }
         setConfigStateInternal({ ...configState, tun: {...tun}});
       },
@@ -171,14 +171,14 @@ function ConfigImpl({
   );
 
   const handleInputOnChange = useCallback(
-    (e) => handleChangeValue(e.target),
+    (e: { target: { name: any; value: any; }; }) => handleChangeValue(e.target),
     [handleChangeValue]
   );
 
   const { selectChartStyleIndex, updateAppConfig } = useStoreActions();
 
   const handleInputOnBlur = useCallback(
-    (e) => {
+    (e: { target: any; }) => {
       const target = e.target;
       const { name, value } = target;
       switch (name) {
