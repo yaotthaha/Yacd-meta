@@ -32,6 +32,7 @@ export type ClashGeneralConfig = {
   'tproxy-port': number;
   'mitm-port'?: number;
   'allow-lan': boolean;
+  'interface-name'?: string
   mode: string;
   'log-level': string;
   sniffing?: boolean;
