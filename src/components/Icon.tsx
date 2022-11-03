@@ -17,5 +17,4 @@ const Icon = ({ id, width = 20, height = 20, className, ...props }: Props) => {
     </svg>
   );
 };
-
 export default React.memo(Icon);
