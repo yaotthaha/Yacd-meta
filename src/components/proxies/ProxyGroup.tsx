@@ -55,7 +55,7 @@ function ProxyGroupImpl({
 
   const {
     app: { updateCollapsibleIsOpen },
-    // proxies: { requestDelayForProxyGroup },
+    proxies: { requestDelayForProxies },
   } = useStoreActions();
 
   const toggle = useCallback(() => {
@@ -74,10 +74,10 @@ function ProxyGroupImpl({
     setIsTestingLatency(true);
     try {
       if (version.meta==true){
-        await proxiesAPI.requestDelayForProxyGroup(apiConfig,name);
+        await proxiesAPI.requestDelayForProxyGroup(apiConfig, name);
         await dispatch(fetchProxies(apiConfig));}
       else{
-        await proxiesAPI.requestDelayForProxy(apiConfig,all);
+        await requestDelayForProxies(apiConfig, all);
         await dispatch(fetchProxies(apiConfig));
       }
     }
