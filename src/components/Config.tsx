@@ -12,7 +12,7 @@ import { fetchVersion } from '$src/api/version';
 import {
   getClashAPIConfig,
   getLatencyTestUrl,
-  getSelectedChartStyleIndex,
+  getSelectedChartStyleIndex
 } from '../store/app';
 import {
   fetchConfigs,
@@ -20,7 +20,7 @@ import {
   getConfigs,
   reloadConfigFile,
   updateConfigs,
-  updateGeoDatabasesFile,
+  updateGeoDatabasesFile
 } from '../store/configs';
 import { openModal } from '../store/modals';
 import Button from './Button';
@@ -41,7 +41,7 @@ const logLeveOptions = [
   ['info', 'Info'],
   ['warning', 'Warning'],
   ['error', 'Error'],
-  ['silent', 'Silent'],
+  ['silent', 'Silent']
 ];
 
 const portFields = [
@@ -49,36 +49,36 @@ const portFields = [
   { key: 'socks-port', label: 'Socks5 Port' },
   { key: 'mixed-port', label: 'Mixed Port' },
   { key: 'redir-port', label: 'Redir Port' },
-  { key: 'mitm-port', label: 'MITM Port' },
+  { key: 'mitm-port', label: 'MITM Port' }
 ];
 
 const langOptions = [
   ['zh', '中文'],
-  ['en', 'English'],
+  ['en', 'English']
 ];
 
 const modeOptions = [
   ['direct', 'Direct'],
   ['rule', 'Rule'],
   ['script', 'Script'],
-  ['global', 'Global'],
+  ['global', 'Global']
 ];
 
 const tunStackOptions = [
   ['gvisor', 'gVisor'],
   ['system', 'System'],
-  ['lwip', 'LWIP'],
+  ['lwip', 'LWIP']
 ];
 
 const mapState = (s: State) => ({
   configs: getConfigs(s),
-  apiConfig: getClashAPIConfig(s),
+  apiConfig: getClashAPIConfig(s)
 });
 
 const mapState2 = (s: State) => ({
   selectedChartStyleIndex: getSelectedChartStyleIndex(s),
   latencyTestUrl: getLatencyTestUrl(s),
-  apiConfig: getClashAPIConfig(s),
+  apiConfig: getClashAPIConfig(s)
 });
 
 const Config = connect(mapState2)(ConfigImpl);
@@ -100,12 +100,12 @@ type ConfigImplProps = {
 };
 
 function ConfigImpl({
-  dispatch,
-  configs,
-  selectedChartStyleIndex,
-  latencyTestUrl,
-  apiConfig,
-}: ConfigImplProps) {
+                      dispatch,
+                      configs,
+                      selectedChartStyleIndex,
+                      latencyTestUrl,
+                      apiConfig
+                    }: ConfigImplProps) {
   const [configState, setConfigStateInternal] = useState(configs);
   const refConfigs = useRef(configs);
   useEffect(() => {
@@ -127,11 +127,11 @@ function ConfigImpl({
   );
 
   const setTunConfigState = useCallback(
-      (name: any, val: any) => {
-        const tun = {...configState.tun, [name]: val }
-        setConfigStateInternal({ ...configState, tun: {...tun}});
-      },
-      [configState]
+    (name: any, val: any) => {
+      const tun = { ...configState.tun, [name]: val };
+      setConfigStateInternal({ ...configState, tun: { ...tun } });
+    },
+    [configState]
   );
 
   const handleChangeValue = useCallback(
@@ -161,7 +161,7 @@ function ConfigImpl({
         case 'enable':
         case 'stack':
           setTunConfigState(name, value);
-          dispatch(updateConfigs(apiConfig, { 'tun': { [name]: value }}));
+          dispatch(updateConfigs(apiConfig, { 'tun': { [name]: value } }));
           break;
         default:
           return;
@@ -205,18 +205,18 @@ function ConfigImpl({
 
   const handleReloadConfigFile = useCallback(() => {
     dispatch(reloadConfigFile(apiConfig));
-  },[apiConfig, dispatch]);
+  }, [apiConfig, dispatch]);
 
   const handleUpdateGeoDatabasesFile = useCallback(() => {
     dispatch(updateGeoDatabasesFile(apiConfig));
-  },[apiConfig, dispatch]);
+  }, [apiConfig, dispatch]);
 
   const handleFlushFakeIPPool = useCallback(() => {
     dispatch(flushFakeIPPool(apiConfig));
-  },[apiConfig, dispatch]);
+  }, [apiConfig, dispatch]);
 
   const { data: version } = useQuery(['/version', apiConfig], () =>
-    fetchVersion('/version',apiConfig)
+    fetchVersion('/version', apiConfig)
   );
 
   const { t, i18n } = useTranslation();
@@ -274,63 +274,65 @@ function ConfigImpl({
             />
           </div>
         </div>
-        { version.meta &&
-        <div>
-          <div className={s0.label}>{t('tls_sniffing')}</div>
-          <div className={s0.wrapSwitch}>
-            <Switch
+        {version.meta &&
+          <div>
+            <div className={s0.label}>{t('tls_sniffing')}</div>
+            <div className={s0.wrapSwitch}>
+              <Switch
                 name='sniffing'
                 checked={configState['sniffing']}
                 onChange={(value: boolean) =>
                   handleChangeValue({ name: 'sniffing', value: value })
                 }
-            />
-          </div>
-        </div>}
-      </div>
-      <div className={s0.sep} >
-        <div />
-      </div>
-      { version.meta && configState.tun?.enable &&
-        <>
-      <div className={s0.section}>
-        <div>
-          <div className={s0.label}>{t('enable_tun_device')}</div>
-          <div className={s0.wrapSwitch}>
-            <Switch
-                checked={configState['tun']?.enable}
-                onChange={(value: boolean) =>
-                    handleChangeValue({ name: 'enable', value: value })
-                }
-            />
-          </div>
-        </div>
-        <div>
-          <div className={s0.label}>TUN IP Stack</div>
-          <Select
-              options={tunStackOptions}
-              selected={configState.tun?.stack?.toLowerCase()}
-              onChange={(e) =>
-                  handleChangeValue({ name: 'stack', value: e.target.value })
-              }
-          />
-        </div>
-        <div>
-          <div className={s0.label}>Device Name</div>
-          <Input
-              value={configState.tun?.device}
-          />
-        </div>
-        <div>
-          <div className={s0.label}>Interface Name</div>
-          <Input
-              value={configState['interface-name']}
-          />
-        </div>
+              />
+            </div>
+          </div>}
       </div>
       <div className={s0.sep}>
         <div />
       </div>
+      {version.meta &&
+        <>
+          {configState.tun?.enable &&
+            <div className={s0.section}>
+              <div>
+                <div className={s0.label}>{t('enable_tun_device')}</div>
+                <div className={s0.wrapSwitch}>
+                  <Switch
+                    checked={configState['tun']?.enable}
+                    onChange={(value: boolean) =>
+                      handleChangeValue({ name: 'enable', value: value })
+                    }
+                  />
+                </div>
+              </div>
+              <div>
+                <div className={s0.label}>TUN IP Stack</div>
+                <Select
+                  options={tunStackOptions}
+                  selected={configState.tun?.stack?.toLowerCase()}
+                  onChange={(e) =>
+                    handleChangeValue({ name: 'stack', value: e.target.value })
+                  }
+                />
+              </div>
+              <div>
+                <div className={s0.label}>Device Name</div>
+                <Input
+                  value={configState.tun?.device}
+                />
+              </div>
+              <div>
+                <div className={s0.label}>Interface Name</div>
+                <Input
+                  value={configState['interface-name']}
+                />
+              </div>
+            </div>
+          }
+          <div className={s0.sep}>
+            <div />
+          </div>
           <div className={s0.section}>
             <div>
               <div className={s0.label}>Reload</div>
