@@ -31,8 +31,8 @@ function Version({
         <a
           className={s.link}
           href={link}
-          target="_blank"
-          rel="noopener noreferrer"
+          target='_blank'
+          rel='noopener noreferrer'
         >
           <GitHub size={20} />
           <span>Source</span>
@@ -48,18 +48,18 @@ function AboutImpl(props: Props) {
   );
   return (
     <>
-      <ContentHeader title="About" />
+      <ContentHeader title='About' />
       {version && version.version ? (
         <Version
           name={version.meta?'Clash.Meta':'Clash'}
           version={version.version}
-          link="https://github.com/metacubex/clash.meta"
+          link='https://github.com/metacubex/clash.meta'
         />
       ) : null}
       <Version
-        name="Yacd"
+        name='Yacd'
         version={__VERSION__}
-        link="https://github.com/metacubex/yacd"
+        link='https://github.com/metacubex/yacd'
       />
     </>
   );

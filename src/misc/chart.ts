@@ -1,4 +1,4 @@
-import { createAsset } from "use-asset"
+import { createAsset } from 'use-asset'
 
 import prettyBytes from './pretty-bytes';
 export const chartJSResource = createAsset(() => {

@@ -26,7 +26,7 @@ function RuleSearch({ dispatch, searchText, updateSearchText }) {
       <div className={s0.RuleSearchContainer}>
         <div className={s0.inputWrapper}>
           <input
-            type="text"
+            type='text'
             value={text}
             onChange={onChange}
             className={s0.input}

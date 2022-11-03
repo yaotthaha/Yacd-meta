@@ -119,7 +119,7 @@ function renderTableOrPlaceholder(conns: FormattedConn[]) {
     <ConnectionTable data={conns} />
   ) : (
     <div className={s.placeHolder}>
-      <SvgYacd width={200} height={200} c1="var(--color-text)" />
+      <SvgYacd width={200} height={200} c1='var(--color-text)' />
     </div>
   );
 }
@@ -209,9 +209,9 @@ function Conn({ apiConfig }) {
           </TabList>
           <div className={s.inputWrapper}>
             <input
-              type="text"
-              name="filter"
-              autoComplete="off"
+              type='text'
+              name='filter'
+              autoComplete='off'
               className={s.input}
               placeholder={t('Search')}
               onChange={(e) => setFilterKeyword(e.target.value)}

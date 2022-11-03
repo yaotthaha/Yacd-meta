@@ -12,7 +12,7 @@ export function TextFilter(props: {
   return (
     <input
       className={s.input}
-      type="text"
+      type='text'
       value={text}
       onChange={onChange}
       placeholder={props.placeholder}

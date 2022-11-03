@@ -92,12 +92,12 @@ function Rules({ apiConfig }: RulesProps) {
     <div>
       <div className={s.header}>
         <ContentHeader title={t('Rules')} />
-        <TextFilter placeholder="Filter" textAtom={ruleFilterText} />
+        <TextFilter placeholder='Filter' textAtom={ruleFilterText} />
       </div>
       <div ref={refRulesContainer} style={{ paddingBottom }}>
         <VariableSizeList
           height={containerHeight - paddingBottom}
-          width="100%"
+          width='100%'
           itemCount={rules.length + provider.names.length}
           itemSize={getItemSize}
           itemData={{ rules, provider, apiConfig }}

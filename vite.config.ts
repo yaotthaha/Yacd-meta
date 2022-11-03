@@ -1,8 +1,9 @@
-import { defineConfig } from 'vite';
-import { VitePWA } from 'vite-plugin-pwa';
+import { defineConfig } from 'vite'
+import { VitePWA } from 'vite-plugin-pwa'
 import react from '@vitejs/plugin-react'
-import * as path from 'path';
-import * as pkg from './package.json';
+import * as path from 'path'
+import * as pkg from './package.json'
+import vitePluginCompression from 'vite-plugin-compression'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -35,5 +36,8 @@ export default defineConfig(({ mode }) => ({
       strategies: 'injectManifest',
       base: './',
     }),
+    vitePluginCompression({
+      deleteOriginFile: true
+    })
   ],
 }));

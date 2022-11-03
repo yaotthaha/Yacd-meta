@@ -52,7 +52,7 @@ function ToggleSwitch({ options, value, name, onChange }: Props) {
             <input
               id={id}
               name={name}
-              type="radio"
+              type='radio'
               value={o.value}
               checked={value === o.value}
               onChange={onChange}

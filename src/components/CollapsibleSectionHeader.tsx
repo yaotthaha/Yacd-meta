@@ -31,7 +31,7 @@ export default function Header({ name, type, toggle, isOpen, qty }: Props) {
       style={{ cursor: 'pointer' }}
       tabIndex={0}
       onKeyDown={handleKeyDown}
-      role="button"
+      role='button'
     >
       <div>
         <SectionNameType name={name} type={type} />
@@ -40,10 +40,10 @@ export default function Header({ name, type, toggle, isOpen, qty }: Props) {
       {typeof qty === 'number' ? <span className={s.qty}>{qty}</span> : null}
 
       <Button
-        kind="minimal"
+        kind='minimal'
         onClick={toggle}
         className={s.btn}
-        title="Toggle collapsible section"
+        title='Toggle collapsible section'
       >
         <span className={cx(s.arrow, { [s.isOpen]: isOpen })}>
           <ChevronDown size={20} />

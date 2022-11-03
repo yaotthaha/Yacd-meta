@@ -103,7 +103,7 @@ function Item({
       <span
         className={s.url}
         tabIndex={0}
-        role="button"
+        role='button'
         onClick={() => onSelect({ baseURL, secret })}
         onKeyUp={handleTap}
       >

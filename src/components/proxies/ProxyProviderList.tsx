@@ -12,7 +12,7 @@ export function ProxyProviderList({
 
   return (
     <>
-      <ContentHeader title="Proxy Provider" />
+      <ContentHeader title='Proxy Provider' />
       <div>
         {items.map((item) => (
           <ProxyProvider

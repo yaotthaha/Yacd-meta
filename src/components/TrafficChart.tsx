@@ -19,7 +19,7 @@ const chartWrapperStyle = {
   // make chartjs chart responsive
   position: 'relative',
   maxWidth: 1000,
-  marginTop:"1em",
+  marginTop:'1em',
 };
 
 const mapState = (s: State) => ({
@@ -59,7 +59,7 @@ function TrafficChart({ apiConfig, selectedChartStyleIndex }) {
   return (
     // @ts-expect-error ts-migrate(2322) FIXME: Type '{ position: string; maxWidth: number; }' is ... Remove this comment to see the full error message
     <div style={chartWrapperStyle}>
-      <canvas id="trafficChart" />
+      <canvas id='trafficChart' />
     </div>
   );
 }
