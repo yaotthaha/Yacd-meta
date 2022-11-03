@@ -43,8 +43,7 @@
     "react-window": "^1.8.7",
     "regenerator-runtime": "0.13.9",
     "tslib": "2.4.0",
-    "use-asset": "1.0.4",
-    "vite-plugin-compression": "^0.5.1"
+    "use-asset": "1.0.4"
   },
   "devDependencies": {
     "@babel/runtime": "7.19.4",
