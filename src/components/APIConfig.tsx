@@ -101,33 +101,33 @@ function APIConfig({ dispatch }) {
     <div className={s0.root} ref={contentEl} onKeyDown={handleContentOnKeyDown}>
       <div className={s0.header}>
         <div className={s0.icon}>
-          <SvgYacd width={160} height={160} stroke="var(--stroke)" />
+          <SvgYacd width={160} height={160} stroke='var(--stroke)' />
         </div>
       </div>
       <div className={s0.body}>
         <div className={s0.hostnamePort}>
           <Field
-            id="baseURL"
-            name="baseURL"
-            label="API Base URL"
-            type="text"
-            placeholder="http://127.0.0.1:9090"
+            id='baseURL'
+            name='baseURL'
+            label='API Base URL'
+            type='text'
+            placeholder='http://127.0.0.1:9090'
             value={baseURL}
             onChange={handleInputOnChange}
           />
           <Field
-            id="secret"
-            name="secret"
-            label="Secret(optional)"
+            id='secret'
+            name='secret'
+            label='Secret(optional)'
             value={secret}
-            type="text"
+            type='text'
             onChange={handleInputOnChange}
           />
         </div>
       </div>
       <div className={s0.error}>{errMsg ? errMsg : null}</div>
       <div className={s0.footer}>
-        <Button label="Add" onClick={onConfirm} />
+        <Button label='Add' onClick={onConfirm} />
       </div>
       <div style={{ height: 20 }} />
       <BackendList />

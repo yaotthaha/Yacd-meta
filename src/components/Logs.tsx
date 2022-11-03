@@ -78,7 +78,7 @@ function Logs({ dispatch, logLevel, apiConfig, logs, logStreamingPaused }) {
             {
               logs.map(
                 (log, index) => (
-                  <div className="" key={index}>
+                  <div className='' key={index}>
                     <LogLine {...log} />
                   </div>
                 ),

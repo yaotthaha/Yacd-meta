@@ -88,7 +88,7 @@ function Proxies({
             <TextFilter textAtom={proxyFilterText} />
           </div>
           <Tooltip label={t('settings')}>
-            <Button kind="minimal" onClick={() => setIsSettingsModalOpen(true)}>
+            <Button kind='minimal' onClick={() => setIsSettingsModalOpen(true)}>
               <Equalizer size={16} />
             </Button>
           </Tooltip>

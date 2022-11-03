@@ -33,7 +33,7 @@ export function ClosePrevConns({
     <div onKeyDown={handleKeyDown}>
       <h2>Close Connections?</h2>
       <p>
-        Click "Yes" to close those connections that are still using the old
+        Click 'Yes' to close those connections that are still using the old
         selected proxy in this group
       </p>
       <div style={{ height: 30 }} />

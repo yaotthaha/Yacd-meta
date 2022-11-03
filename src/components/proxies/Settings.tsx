@@ -59,7 +59,7 @@ function Settings({ appConfig }) {
         <span>{t('hide_unavail_proxies')}</span>
         <div>
           <Switch
-            name="hideUnavailableProxies"
+            name='hideUnavailableProxies'
             checked={appConfig.hideUnavailableProxies}
             onChange={handleHideUnavailablesSwitchOnChange}
           />
@@ -69,7 +69,7 @@ function Settings({ appConfig }) {
         <span>{t('auto_close_conns')}</span>
         <div>
           <Switch
-            name="autoCloseOldConns"
+            name='autoCloseOldConns'
             checked={appConfig.autoCloseOldConns}
             onChange={(v) => updateAppConfig('autoCloseOldConns', v)}
           />

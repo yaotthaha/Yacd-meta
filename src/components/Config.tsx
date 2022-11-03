@@ -255,7 +255,7 @@ function ConfigImpl({
           <div className={s0.label}>Log Level</div>
           <Select
             options={logLeveOptions}
-            selected={configState["log-level"].toLowerCase()}
+            selected={configState['log-level'].toLowerCase()}
             onChange={(e) =>
               handleChangeValue({ name: 'log-level', value: e.target.value })
             }
@@ -266,7 +266,7 @@ function ConfigImpl({
           <div className={s0.label}>{t('allow_lan')}</div>
           <div className={s0.wrapSwitch}>
             <Switch
-              name="allow-lan"
+              name='allow-lan'
               checked={configState['allow-lan']}
               onChange={(value: boolean) =>
                 handleChangeValue({ name: 'allow-lan', value: value })
@@ -279,7 +279,7 @@ function ConfigImpl({
           <div className={s0.label}>{t('tls_sniffing')}</div>
           <div className={s0.wrapSwitch}>
             <Switch
-                name="sniffing"
+                name='sniffing'
                 checked={configState['sniffing']}
                 onChange={(value: boolean) =>
                   handleChangeValue({ name: 'sniffing', value: value })
@@ -324,7 +324,7 @@ function ConfigImpl({
         <div>
           <div className={s0.label}>Interface Name</div>
           <Input
-              value={configState["interface-name"]}
+              value={configState['interface-name']}
           />
         </div>
       </div>
@@ -363,8 +363,8 @@ function ConfigImpl({
         <div>
           <div className={s0.label}>{t('latency_test_url')}</div>
           <SelfControlledInput
-            name="latencyTestUrl"
-            type="text"
+            name='latencyTestUrl'
+            type='text'
             value={latencyTestUrl}
             onBlur={handleInputOnBlur}
           />
@@ -394,7 +394,7 @@ function ConfigImpl({
           <div className={s0.label}>Action</div>
           <Button
             start={<LogOut size={16} />}
-            label="Switch backend"
+            label='Switch backend'
             onClick={openAPIConfigModal}
           />
         </div>

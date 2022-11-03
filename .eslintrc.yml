@@ -44,6 +44,6 @@ rules:
     - warn
     - additionalHooks: useRecoilCallback
   simple-import-sort/imports: error
-#   quotes: ["error", "single"]
-#   strict: ["error", "never"]
-#   no-console: "warn"
+#   quotes: ['error', 'single']
+#   strict: ['error', 'never']
+#   no-console: 'warn'

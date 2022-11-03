@@ -84,11 +84,11 @@ function ProxyProviderImpl({
             qty={proxies.length}
         />
         <Button
-            kind="minimal"
+            kind='minimal'
             start={<Refresh />}
             onClick={updateProvider} />
         <Button
-            kind="minimal"
+            kind='minimal'
             start={<Zap size={16} />}
             onClick={healthcheckProvider}
             isLoading={isHealthcheckLoading}
@@ -101,9 +101,9 @@ function ProxyProviderImpl({
       <Collapsible isOpen={isOpen}>
         <ProxyList all={proxies} />
         <div className={s.actionFooter}>
-          <Button text="Update" start={<Refresh />} onClick={updateProvider} />
+          <Button text='Update' start={<Refresh />} onClick={updateProvider} />
           <Button
-            text="Health Check"
+            text='Health Check'
             start={<Zap size={16} />}
             onClick={healthcheckProvider}
             isLoading={isHealthcheckLoading}
@@ -133,11 +133,11 @@ function Refresh() {
     <motion.div
       className={s.refresh}
       variants={button}
-      initial="rest"
-      whileHover="hover"
-      whileTap="pressed"
+      initial='rest'
+      whileHover='hover'
+      whileTap='pressed'
     >
-      <motion.div className="flexCenter" variants={arrow}>
+      <motion.div className='flexCenter' variants={arrow}>
         <RotateCw size={16} />
       </motion.div>
     </motion.div>

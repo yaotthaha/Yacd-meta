@@ -96,8 +96,8 @@ function ProxyGroupImpl({
           isOpen={isOpen}
         />
         <Button
-          title="Test latency"
-          kind="minimal"
+          title='Test latency'
+          kind='minimal'
           onClick={testLatency}
           isLoading={isTestingLatency}
         >

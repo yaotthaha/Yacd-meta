@@ -101,7 +101,7 @@ export default function SideBar() {
       <div className={s.footer}>
         <ThemeSwitcher />
         <Tooltip label={t('about')}>
-          <Link to="/about" className={s.iconWrapper}>
+          <Link to='/about' className={s.iconWrapper}>
             <Info size={20} />
           </Link>
         </Tooltip>
