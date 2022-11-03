@@ -291,7 +291,7 @@ function ConfigImpl({
       <div className={s0.sep} >
         <div />
       </div>
-      { version.meta &&
+      { version.meta && configState.tun?.enable &&
         <>
       <div className={s0.section}>
         <div>
@@ -309,7 +309,7 @@ function ConfigImpl({
           <div className={s0.label}>TUN IP Stack</div>
           <Select
               options={tunStackOptions}
-              selected={configState.tun?.stack.toLowerCase()}
+              selected={configState.tun?.stack?.toLowerCase()}
               onChange={(e) =>
                   handleChangeValue({ name: 'stack', value: e.target.value })
               }
