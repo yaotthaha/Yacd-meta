@@ -67,6 +67,7 @@ const modeOptions = [
 const tunStackOptions = [
   ['gvisor', 'gVisor'],
   ['system', 'System'],
+  ['lwip', 'LWIP'],
 ];
 
 const mapState = (s: State) => ({
@@ -243,7 +244,7 @@ function ConfigImpl({
           <div className={s0.label}>Mode</div>
           <Select
             options={modeOptions}
-            selected={configState['mode']}
+            selected={configState.mode.toLowerCase()}
             onChange={(e) =>
               handleChangeValue({ name: 'mode', value: e.target.value })
             }
@@ -254,7 +255,7 @@ function ConfigImpl({
           <div className={s0.label}>Log Level</div>
           <Select
             options={logLeveOptions}
-            selected={configState['log-level']}
+            selected={configState["log-level"].toLowerCase()}
             onChange={(e) =>
               handleChangeValue({ name: 'log-level', value: e.target.value })
             }
@@ -308,10 +309,22 @@ function ConfigImpl({
           <div className={s0.label}>TUN IP Stack</div>
           <Select
               options={tunStackOptions}
-              selected={configState['tun']?.stack.toLowerCase()}
+              selected={configState.tun?.stack.toLowerCase()}
               onChange={(e) =>
                   handleChangeValue({ name: 'stack', value: e.target.value })
               }
+          />
+        </div>
+        <div>
+          <div className={s0.label}>Device Name</div>
+          <Input
+              value={configState.tun?.device}
+          />
+        </div>
+        <div>
+          <div className={s0.label}>Interface Name</div>
+          <Input
+              value={configState["interface-name"]}
           />
         </div>
       </div>
