@@ -25,6 +25,7 @@ const colors = {
   error: '#c11c1c',
 };
 
+
 const logTypes = {
   debug: 'debug',
   info: 'info',
