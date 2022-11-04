@@ -293,7 +293,7 @@ function ConfigImpl({
       </div>
       {version.meta &&
         <>
-          {configState.tun?.enable &&
+
             <div className={s0.section}>
               <div>
                 <div className={s0.label}>{t('enable_tun_device')}</div>
@@ -329,7 +329,6 @@ function ConfigImpl({
                 />
               </div>
             </div>
-          }
           <div className={s0.sep}>
             <div />
           </div>
