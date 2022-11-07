@@ -205,10 +205,6 @@ function ConfigImpl({
     },
     [apiConfig, dispatch, updateAppConfig]
   );
-    const handlechangeDevice = {
-        return: configState.tun?.device
-    }
-    const handlechangeInter = {}
   const handleReloadConfigFile = useCallback(() => {
     dispatch(reloadConfigFile(apiConfig));
   }, [apiConfig, dispatch]);
@@ -324,14 +320,18 @@ function ConfigImpl({
               </div>
               <div>
                 <div className={s0.label}>Device Name</div>
-                <Input
-                  value={configState.tun?.device}
+                      <Input
+                          name='device name'
+                          value={configState.tun?.device}
+                          onChange={handleInputOnBlur}
                 />
               </div>
               <div>
                 <div className={s0.label}>Interface Name</div>
-                <Input
-                  value={configState['interface-name']}
+                      <Input
+                          name='interface name'
+                          value={configState['interface-name']}
+                          onChange={handleInputOnBlur}
                 />
               </div>
             </div>
