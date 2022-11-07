@@ -1,4 +1,4 @@
-import { formatDistance } from 'date-fns';
+import { formatDistance, formatDistanceToNow, formatDistanceToNowStrict } from 'date-fns';
 import * as React from 'react';
 import { RotateCw, Zap } from 'react-feather';
 import Button from 'src/components/Button';
@@ -14,7 +14,7 @@ import {
   getProxySortBy,
 } from 'src/store/app';
 import { getDelay, healthcheckProviderByName } from 'src/store/proxies';
-import { DelayMapping } from 'src/store/types';
+import { DelayMapping,SubscriptionInfo } from 'src/store/types';
 
 import { useFilteredAndSorted } from './hooks';
 import { ProxyList, ProxyListSummaryView } from './ProxyList';
@@ -31,6 +31,7 @@ type Props = {
   type: 'Proxy' | 'Rule';
   vehicleType: 'HTTP' | 'File' | 'Compatible';
   updatedAt?: string;
+  subscriptionInfo?: SubscriptionInfo;
   dispatch: (x: any) => Promise<any>;
   isOpen: boolean;
   apiConfig: any;
@@ -44,6 +45,7 @@ function ProxyProviderImpl({
   proxySortBy,
   vehicleType,
   updatedAt,
+  subscriptionInfo,
   isOpen,
   dispatch,
   apiConfig,
@@ -73,6 +75,13 @@ function ProxyProviderImpl({
   }, [isOpen, updateCollapsibleIsOpen, name]);
 
   const timeAgo = formatDistance(new Date(updatedAt), new Date());
+  const total = formatBytes(subscriptionInfo.Total);
+  const used = formatBytes(subscriptionInfo.Download+subscriptionInfo.Upload);
+  const unused = formatBytes(subscriptionInfo.Total-subscriptionInfo.Download-subscriptionInfo.Upload);
+  const expire = new Date(subscriptionInfo.Expire);
+  const getYear = expire.getFullYear() + '-';
+  const getMonth = (expire.getMonth()+1 < 10 ? '0'+(expire.getMonth()+1) : expire.getMonth()+1) + '-';
+  const getDate = expire.getDate() + ' ';
   return (
     <div className={s.body}>
       <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -93,6 +102,9 @@ function ProxyProviderImpl({
             onClick={healthcheckProvider}
             isLoading={isHealthcheckLoading}
         />
+      </div>
+      <div className={s.actionFooter}>
+        Total: {total} &nbsp;&nbsp; Used: {used} &nbsp;&nbsp; Unused: {unused} &nbsp;&nbsp; Expire: {getYear+getMonth+getDate}
       </div>
       <div className={s.updatedAt}>
         <small>Updated {timeAgo} ago</small>
@@ -126,6 +138,16 @@ const arrow = {
   rest: { rotate: 0 },
   hover: { rotate: 360, transition: { duration: 0.3 } },
 };
+
+function formatBytes(bytes, decimals = 2) {
+  if (!+bytes) return '0 Bytes'
+  const k = 1024
+  const dm = decimals < 0 ? 0 : decimals
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
+}
+
 function Refresh() {
   const module = framerMotionResouce.read();
   const motion = module.motion;

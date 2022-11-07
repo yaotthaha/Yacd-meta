@@ -9,7 +9,6 @@ export function ProxyProviderList({
   items: FormattedProxyProvider[];
 }) {
   if (items.length === 0) return null;
-
   return (
     <>
       <ContentHeader title='Proxy Provider' />
@@ -22,6 +21,7 @@ export function ProxyProviderList({
             type={item.type}
             vehicleType={item.vehicleType}
             updatedAt={item.updatedAt}
+            subscriptionInfo={item.subscriptionInfo}
           />
         ))}
       </div>

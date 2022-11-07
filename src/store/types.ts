@@ -47,6 +47,13 @@ export type TunPartial<T> = {
 
 type LatencyHistory = Array<{ time: string; delay: number }>;
 type PrimitiveProxyType = 'Shadowsocks' | 'Snell' | 'Socks5' | 'Http' | 'Vmess';
+
+export type SubscriptionInfo = {
+  Download?: number;
+  Upload?: number;
+  Total?: number;
+  Expire?: number;
+}
 export type ProxyItem = {
   name: string;
   type: PrimitiveProxyType;
@@ -63,6 +70,7 @@ export type ProxyProvider = {
   updatedAt: string;
   vehicleType: 'HTTP' | 'File' | 'Compatible';
   proxies: Array<ProxyItem>;
+  subscriptionInfo?: SubscriptionInfo;
 };
 
 export type FormattedProxyProvider = Omit<ProxyProvider, 'proxies'> & {
