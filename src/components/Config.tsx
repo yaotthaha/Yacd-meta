@@ -195,14 +195,20 @@ function ConfigImpl({
         case 'latencyTestUrl': {
           updateAppConfig(name, value);
           break;
-        }
+          }
+        case 'device name':
+        case 'interface name':
+            break;
         default:
           throw new Error(`unknown input name ${name}`);
       }
     },
     [apiConfig, dispatch, updateAppConfig]
   );
-
+    const handlechangeDevice = {
+        return: configState.tun?.device
+    }
+    const handlechangeInter = {}
   const handleReloadConfigFile = useCallback(() => {
     dispatch(reloadConfigFile(apiConfig));
   }, [apiConfig, dispatch]);
