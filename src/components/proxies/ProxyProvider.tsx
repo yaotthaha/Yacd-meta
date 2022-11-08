@@ -75,8 +75,8 @@ function ProxyProviderImpl({
   }, [isOpen, updateCollapsibleIsOpen, name]);
 
   const timeAgo = formatDistance(new Date(updatedAt), new Date());
-  const total = formatBytes(subscriptionInfo.Total);
-  const unused = formatBytes(subscriptionInfo.Total - subscriptionInfo.Download - subscriptionInfo.Upload);
+  const total = subscriptionInfo ? formatBytes(subscriptionInfo.Total):0;
+  const unused = subscriptionInfo ? formatBytes(subscriptionInfo.Total - subscriptionInfo.Download - subscriptionInfo.Upload):0;
   const expireStr = () => {
     if (subscriptionInfo.Expire === 0) {
       return 'Null';
