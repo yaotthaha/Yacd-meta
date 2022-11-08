@@ -56,7 +56,7 @@ type ProxyProps = {
   proxy: any;
   latency: any;
     isSelectable?: boolean;
-    udp?: boolean;
+    udp: boolean;
   onClick?: (proxyName: string) => unknown;
 };
 
@@ -65,7 +65,6 @@ function ProxySmallImpl({
   name,
   proxy,
     latency,
-  udp,
   isSelectable,
   onClick,
 }: ProxyProps) {
@@ -187,8 +186,8 @@ function ProxyImpl({
         </ProxyNameTooltip>
       </div>
       <div className={s0.row}>
-        <span className={s0.proxyType} style={{ opacity: now ? 0.6 : 0.2 }}>
-          {formatProxyType(proxy.type)}
+              <span className={s0.proxyType} style={{ opacity: now ? 0.6 : 0.2 }}>
+                  {proxy.udp ? formatProxyType(proxy.type)+" udp":formatProxyType(proxy.type)}
               </span>
               <span className={s0.udpType}>
                   {formatUdpType(udp)}

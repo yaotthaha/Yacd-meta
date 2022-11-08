@@ -57,7 +57,7 @@ export type SubscriptionInfo = {
 export type ProxyItem = {
   name: string;
     type: PrimitiveProxyType;
-    udp?: boolean;
+    udp: boolean;
   history: LatencyHistory;
   all?: string[];
   now?: string;
