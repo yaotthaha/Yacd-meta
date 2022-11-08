@@ -64,14 +64,14 @@ function ProxySmallImpl({
   now,
   name,
   proxy,
-    latency,
+  latency,
   isSelectable,
   onClick,
 }: ProxyProps) {
   const color = useMemo(() => getProxyDotBackgroundColor(latency, proxy.type), [
     latency,
       proxy,
-    
+
   ]);
   const title = useMemo(() => {
     let ret = name;
@@ -106,7 +106,7 @@ function ProxySmallImpl({
       title={title}
       className={className}
       style={{ background: color }}
-          onClick={doSelect}
+      onClick={doSelect}
       onKeyDown={handleKeyDown}
       role={isSelectable ? 'menuitem' : ''}
     />
@@ -139,6 +139,7 @@ function ProxyNameTooltip({ children, label, 'aria-label': ariaLabel }) {
     </>
   );
 }
+
 function ProxyImpl({
   now,
   name,
@@ -154,7 +155,7 @@ function ProxyImpl({
   }, [name, onClick, isSelectable]);
     function formatUdpType (t: boolean) {
         if (!t) return '';
-        return 'udp';
+        return 'UDP';
     }
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent) => {
@@ -180,17 +181,15 @@ function ProxyImpl({
       onKeyDown={handleKeyDown}
       role={isSelectable ? 'menuitem' : ''}
     >
-     <div className={s0.proxyName}>
+     <div className={`${s0.proxyName} ${s0.row}`}>
         <ProxyNameTooltip label={name} aria-label={'proxy name: ' + name}>
           <span>{name}</span>
         </ProxyNameTooltip>
+       <span className={s0.proxyType} style={{ opacity: now ? 0.6 : 0.2 }}>{formatUdpType(proxy.udp)}</span>
       </div>
       <div className={s0.row}>
               <span className={s0.proxyType} style={{ opacity: now ? 0.6 : 0.2 }}>
-                  {proxy.udp ? formatProxyType(proxy.type)+" udp":formatProxyType(proxy.type)}
-              </span>
-              <span className={s0.udpType}>
-                  {formatUdpType(udp)}
+                  {formatProxyType(proxy.type)}
               </span>
         {latency && latency.number ? (
                   <ProxyLatency number={latency.number} color={color} />
