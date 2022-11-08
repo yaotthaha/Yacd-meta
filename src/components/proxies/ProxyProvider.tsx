@@ -1,4 +1,4 @@
-import { formatDistance, formatDistanceToNow, formatDistanceToNowStrict } from 'date-fns';
+import { formatDistance } from 'date-fns';
 import * as React from 'react';
 import { RotateCw, Zap } from 'react-feather';
 import Button from 'src/components/Button';
@@ -11,10 +11,10 @@ import {
   getClashAPIConfig,
   getCollapsibleIsOpen,
   getHideUnavailableProxies,
-  getProxySortBy,
+  getProxySortBy
 } from 'src/store/app';
 import { getDelay, healthcheckProviderByName } from 'src/store/proxies';
-import { DelayMapping,SubscriptionInfo } from 'src/store/types';
+import { DelayMapping, SubscriptionInfo } from 'src/store/types';
 
 import { useFilteredAndSorted } from './hooks';
 import { ProxyList, ProxyListSummaryView } from './ProxyList';
@@ -38,18 +38,18 @@ type Props = {
 };
 
 function ProxyProviderImpl({
-  name,
-  proxies: all,
-  delay,
-  hideUnavailableProxies,
-  proxySortBy,
-  vehicleType,
-  updatedAt,
-  subscriptionInfo,
-  isOpen,
-  dispatch,
-  apiConfig,
-}: Props) {
+                             name,
+                             proxies: all,
+                             delay,
+                             hideUnavailableProxies,
+                             proxySortBy,
+                             vehicleType,
+                             updatedAt,
+                             subscriptionInfo,
+                             isOpen,
+                             dispatch,
+                             apiConfig
+                           }: Props) {
   const proxies = useFilteredAndSorted(
     all,
     delay,
@@ -67,7 +67,7 @@ function ProxyProviderImpl({
   }, [apiConfig, dispatch, name, setIsHealthcheckLoading]);
 
   const {
-    app: { updateCollapsibleIsOpen },
+    app: { updateCollapsibleIsOpen }
   } = useStoreActions();
 
   const toggle = useCallback(() => {
@@ -76,36 +76,43 @@ function ProxyProviderImpl({
 
   const timeAgo = formatDistance(new Date(updatedAt), new Date());
   const total = formatBytes(subscriptionInfo.Total);
-  const used = formatBytes(subscriptionInfo.Download+subscriptionInfo.Upload);
-  const unused = formatBytes(subscriptionInfo.Total-subscriptionInfo.Download-subscriptionInfo.Upload);
-  const expire = new Date(subscriptionInfo.Expire);
-  const getYear = expire.getFullYear() + '-';
-  const getMonth = (expire.getMonth()+1 < 10 ? '0'+(expire.getMonth()+1) : expire.getMonth()+1) + '-';
-  const getDate = expire.getDate() + ' ';
+  const unused = formatBytes(subscriptionInfo.Total - subscriptionInfo.Download - subscriptionInfo.Upload);
+  const expireStr = () => {
+    if (subscriptionInfo.Expire === 0) {
+      return 'Null';
+    }
+    const expire = new Date(subscriptionInfo.Expire*1000);
+    const getYear = expire.getFullYear() + '-';
+    const getMonth = (expire.getMonth() + 1 < 10 ? '0' + (expire.getMonth() + 1) : expire.getMonth() + 1) + '-';
+    const getDate = expire.getDate() + ' ';
+    return getYear + getMonth + getDate;
+  };
   return (
     <div className={s.body}>
       <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
         <CollapsibleSectionHeader
-            name={name}
-            toggle={toggle}
-            type={vehicleType}
-            isOpen={isOpen}
-            qty={proxies.length}
+          name={name}
+          toggle={toggle}
+          type={vehicleType}
+          isOpen={isOpen}
+          qty={proxies.length}
         />
         <Button
-            kind='minimal'
-            start={<Refresh />}
-            onClick={updateProvider} />
+          kind='minimal'
+          start={<Refresh />}
+          onClick={updateProvider} />
         <Button
-            kind='minimal'
-            start={<Zap size={16} />}
-            onClick={healthcheckProvider}
-            isLoading={isHealthcheckLoading}
+          kind='minimal'
+          start={<Zap size={16} />}
+          onClick={healthcheckProvider}
+          isLoading={isHealthcheckLoading}
         />
       </div>
-      <div className={s.actionFooter}>
-        Total: {total} &nbsp;&nbsp; Used: {used} &nbsp;&nbsp; Unused: {unused} &nbsp;&nbsp; Expire: {getYear+getMonth+getDate}
-      </div>
+      {
+        subscriptionInfo && <div className={s.updatedAt}>
+          <small>{unused} / {total} &nbsp;&nbsp; Expire: {expireStr()} </small>
+        </div>
+      }
       <div className={s.updatedAt}>
         <small>Updated {timeAgo} ago</small>
       </div>
@@ -132,20 +139,20 @@ function ProxyProviderImpl({
 
 const button = {
   rest: { scale: 1 },
-  pressed: { scale: 0.95 },
+  pressed: { scale: 0.95 }
 };
 const arrow = {
   rest: { rotate: 0 },
-  hover: { rotate: 360, transition: { duration: 0.3 } },
+  hover: { rotate: 360, transition: { duration: 0.3 } }
 };
 
 function formatBytes(bytes, decimals = 2) {
-  if (!+bytes) return '0 Bytes'
-  const k = 1024
-  const dm = decimals < 0 ? 0 : decimals
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
+  if (!+bytes) return '0 Bytes';
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }
 
 function Refresh() {
@@ -180,7 +187,7 @@ const mapState = (s, { proxies, name }) => {
     delay,
     hideUnavailableProxies,
     proxySortBy,
-    isOpen: collapsibleIsOpen[`proxyProvider:${name}`],
+    isOpen: collapsibleIsOpen[`proxyProvider:${name}`]
   };
 };
 
