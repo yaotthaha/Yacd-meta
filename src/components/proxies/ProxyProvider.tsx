@@ -76,7 +76,8 @@ function ProxyProviderImpl({
 
   const timeAgo = formatDistance(new Date(updatedAt), new Date());
   const total = subscriptionInfo ? formatBytes(subscriptionInfo.Total):0;
-  const unused = subscriptionInfo ? formatBytes(subscriptionInfo.Total - subscriptionInfo.Download - subscriptionInfo.Upload):0;
+    const unused = subscriptionInfo ? formatBytes(subscriptionInfo.Total - subscriptionInfo.Download - subscriptionInfo.Upload) : 0;
+    const percentage = subscriptionInfo ? (((subscriptionInfo.Total - subscriptionInfo.Download - subscriptionInfo.Upload) / subscriptionInfo.Total) * 100).toFixed(2) : 0;
   const expireStr = () => {
     if (subscriptionInfo.Expire === 0) {
       return 'Null';
@@ -110,7 +111,7 @@ function ProxyProviderImpl({
       </div>
       {
         subscriptionInfo && <div className={s.updatedAt}>
-          <small>{unused} / {total} &nbsp;&nbsp; Expire: {expireStr()} </small>
+                  <small>{unused} / {total} ( { percentage }% ) &nbsp;&nbsp; Expire: {expireStr()} </small>
         </div>
       }
       <div className={s.updatedAt}>
@@ -154,7 +155,6 @@ function formatBytes(bytes, decimals = 2) {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }
-
 function Refresh() {
   const module = framerMotionResouce.read();
   const motion = module.motion;

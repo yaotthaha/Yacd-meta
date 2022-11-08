@@ -30,7 +30,7 @@ function getLabelColor({
     return colorMap.na;
   } else if (number < 200) {
     return colorMap.good;
-  } else if (number < 400) {
+  } else if (number < 500) {
     return colorMap.normal;
   } else if (typeof number === 'number') {
     return colorMap.bad;
@@ -42,7 +42,7 @@ function getProxyDotBackgroundColor(
   latency: {
     number?: number;
   },
-  proxyType: string
+    proxyType: string,
 ) {
   if (NonProxyTypes.indexOf(proxyType) > -1) {
     return 'linear-gradient(135deg, white 15%, #999 15% 30%, white 30% 45%, #999 45% 60%, white 60% 75%, #999 75% 90%, white 90% 100%)';
@@ -55,7 +55,8 @@ type ProxyProps = {
   now?: boolean;
   proxy: any;
   latency: any;
-  isSelectable?: boolean;
+    isSelectable?: boolean;
+    udp?: boolean;
   onClick?: (proxyName: string) => unknown;
 };
 
@@ -63,13 +64,15 @@ function ProxySmallImpl({
   now,
   name,
   proxy,
-  latency,
+    latency,
+  udp,
   isSelectable,
   onClick,
 }: ProxyProps) {
   const color = useMemo(() => getProxyDotBackgroundColor(latency, proxy.type), [
     latency,
-    proxy,
+      proxy,
+    
   ]);
   const title = useMemo(() => {
     let ret = name;
@@ -104,7 +107,7 @@ function ProxySmallImpl({
       title={title}
       className={className}
       style={{ background: color }}
-      onClick={doSelect}
+          onClick={doSelect}
       onKeyDown={handleKeyDown}
       role={isSelectable ? 'menuitem' : ''}
     />
@@ -115,6 +118,7 @@ function formatProxyType(t: string) {
   if (t === 'Shadowsocks') return 'SS';
   return t;
 }
+
 const positionProxyNameTooltip = (triggerRect: { left: number; top: number }) => {
   return {
     left: triggerRect.left + window.scrollX - 5,
@@ -140,7 +144,8 @@ function ProxyImpl({
   now,
   name,
   proxy,
-  latency,
+    latency,
+  udp,
   isSelectable,
   onClick,
 }: ProxyProps) {
@@ -148,6 +153,10 @@ function ProxyImpl({
   const doSelect = React.useCallback(() => {
     isSelectable && onClick && onClick(name);
   }, [name, onClick, isSelectable]);
+    function formatUdpType (t: boolean) {
+        if (!t) return '';
+        return 'udp';
+    }
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent) => {
       if (e.keyCode === keyCodes.Enter) {
@@ -180,9 +189,12 @@ function ProxyImpl({
       <div className={s0.row}>
         <span className={s0.proxyType} style={{ opacity: now ? 0.6 : 0.2 }}>
           {formatProxyType(proxy.type)}
-        </span>
+              </span>
+              <span className={s0.udpType}>
+                  {formatUdpType(udp)}
+              </span>
         {latency && latency.number ? (
-          <ProxyLatency number={latency.number} color={color} />
+                  <ProxyLatency number={latency.number} color={color} />
         ) : null}
       </div>
     </div>
