@@ -55,8 +55,9 @@ type ProxyProps = {
   now?: boolean;
   proxy: any;
   latency: any;
-    isSelectable?: boolean;
-    udp: boolean;
+  isSelectable?: boolean;
+  udp: boolean;
+  tfo: boolean;
   onClick?: (proxyName: string) => unknown;
 };
 
@@ -70,7 +71,7 @@ function ProxySmallImpl({
 }: ProxyProps) {
   const color = useMemo(() => getProxyDotBackgroundColor(latency, proxy.type), [
     latency,
-      proxy,
+    proxy,
 
   ]);
   const title = useMemo(() => {
@@ -144,8 +145,7 @@ function ProxyImpl({
   now,
   name,
   proxy,
-    latency,
-  udp,
+  latency,
   isSelectable,
   onClick,
 }: ProxyProps) {
@@ -156,6 +156,10 @@ function ProxyImpl({
     function formatUdpType (t: boolean) {
         if (!t) return '';
         return 'UDP';
+    }
+    function formatTfo (t: boolean) {
+        if (!t) return '';
+        return <img className={s0.tfoType} src="../../assets/tfo.svg" alt="" />;
     }
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent) => {
@@ -185,7 +189,8 @@ function ProxyImpl({
         <ProxyNameTooltip label={name} aria-label={'proxy name: ' + name}>
           <span>{name}</span>
         </ProxyNameTooltip>
-       <span className={s0.proxyType} style={{ opacity: now ? 0.6 : 0.2 }}>{formatUdpType(proxy.udp)}</span>
+              <span className={s0.proxyType} style={{ opacity: now ? 0.6 : 0.2 }}>{formatUdpType(proxy.udp)}</span>
+              {formatTfo(proxy.tfo)}
       </div>
       <div className={s0.row}>
               <span className={s0.proxyType} style={{ opacity: now ? 0.6 : 0.2 }}>

@@ -58,6 +58,7 @@ export type ProxyItem = {
   name: string;
   type: PrimitiveProxyType;
   udp: boolean;
+  tfo: boolean;
   history: LatencyHistory;
   all?: string[];
   now?: string;
