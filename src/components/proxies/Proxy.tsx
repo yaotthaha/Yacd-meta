@@ -159,7 +159,7 @@ function ProxyImpl({
     }
     function formatTfo (t: boolean) {
         if (!t) return '';
-        return <img className={s0.tfoType} src="../../assets/tfo.svg" alt="" />;
+        return <img className={s0.tfoType} src="../../public/tfo.svg" alt="" />;
     }
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent) => {
@@ -189,8 +189,8 @@ function ProxyImpl({
         <ProxyNameTooltip label={name} aria-label={'proxy name: ' + name}>
           <span>{name}</span>
         </ProxyNameTooltip>
-              <span className={s0.proxyType} style={{ opacity: now ? 0.6 : 0.2 }}>{formatUdpType(proxy.udp)}</span>
-              {formatTfo(proxy.tfo)}
+              <span className={s0.proxyType} style={{ opacity: now ? 0.6 : 0.2 }}>{formatUdpType(proxy.udp)}{formatTfo(proxy.tfo)}</span>
+              
       </div>
       <div className={s0.row}>
               <span className={s0.proxyType} style={{ opacity: now ? 0.6 : 0.2 }}>
