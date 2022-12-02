@@ -159,7 +159,7 @@ function ProxyImpl({
     }
     function formatTfo (t: boolean) {
         if (!t) return '';
-        return <img className={s0.tfoType} src="../assets/tfo.svg" alt="tfo" />;
+        return <img className={s0.tfoType} src="./assets/tfo.svg" alt="tfo" />;
     }
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent) => {
