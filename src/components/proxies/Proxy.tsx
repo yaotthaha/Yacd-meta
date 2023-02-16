@@ -77,13 +77,6 @@ function ProxySmallImpl({ now, name, proxy, latency, isSelectable, onClick }: Pr
     isSelectable && onClick && onClick(name);
   }, [name, onClick, isSelectable]);
 
-  const className = useMemo(() => {
-    return cx(s0.proxySmall, {
-      [s0.now]: now,
-      [s0.selectable]: isSelectable,
-    });
-  }, [isSelectable, now]);
-
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent) => {
       if (e.keyCode === keyCodes.Enter) {
@@ -96,12 +89,16 @@ function ProxySmallImpl({ now, name, proxy, latency, isSelectable, onClick }: Pr
   return (
     <div
       title={title}
-      className={className}
-      style={{ background: color }}
+      className={cx(s0.proxySmall, {
+        [s0.selectable]: isSelectable,
+      })}
+      style={{ background: color, scale: now ? '1.6' : '1' }}
       onClick={doSelect}
       onKeyDown={handleKeyDown}
       role={isSelectable ? 'menuitem' : ''}
-    />
+    >
+      {now && <div className={s0.now} />}
+    </div>
   );
 }
 
