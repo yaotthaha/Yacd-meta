@@ -24,7 +24,7 @@ console.log('Version:', __VERSION__);
 
 window.onload = function startup() {
   const el = document.getElementById('app');
-  el.addEventListener('touchstart', onTouchStart, false);
+  el.addEventListener('touchstart', onTouchStart, { passive: true });
   el.addEventListener('touchmove', onTouchMove, false);
   el.addEventListener('touchend', onTouchEnd, false);
 };

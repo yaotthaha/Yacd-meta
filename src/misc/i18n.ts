@@ -34,7 +34,7 @@ i18next
             break;
           case '/__en/translation.json':
           default:
-            p = allLocales.en;
+            p = allLocales.zh;
             break;
         }
 
