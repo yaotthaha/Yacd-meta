@@ -33,6 +33,8 @@ i18next
             p = allLocales.zh;
             break;
           case '/__en/translation.json':
+            p = allLocales.en;
+            break;
           default:
             p = allLocales.zh;
             break;

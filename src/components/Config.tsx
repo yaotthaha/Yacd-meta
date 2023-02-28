@@ -102,6 +102,8 @@ function ConfigImpl({
   latencyTestUrl,
   apiConfig,
 }: ConfigImplProps) {
+  const { t, i18n } = useTranslation();
+
   const [configState, setConfigStateInternal] = useState(configs);
   const refConfigs = useRef(configs);
   useEffect(() => {
@@ -116,7 +118,7 @@ function ConfigImpl({
   }, [dispatch]);
 
   const setConfigState = useCallback(
-    (name: any, val: any) => {
+    (name: string, val: any) => {
       setConfigStateInternal({ ...configState, [name]: val });
     },
     [configState]
@@ -130,7 +132,7 @@ function ConfigImpl({
     [configState]
   );
 
-  const handleChangeValue = useCallback(
+  const handleInputOnChange = useCallback(
     ({ name, value }) => {
       switch (name) {
         case 'mode':
@@ -166,17 +168,16 @@ function ConfigImpl({
     [apiConfig, dispatch, setConfigState, setTunConfigState]
   );
 
-  const handleInputOnChange = useCallback(
-    (e: { target: { name: any; value: any } }) => handleChangeValue(e.target),
-    [handleChangeValue]
-  );
-
   const { selectChartStyleIndex, updateAppConfig } = useStoreActions();
 
   const handleInputOnBlur = useCallback(
-    (e: { target: any }) => {
-      const target = e.target;
-      const { name, value } = target;
+    (
+      e:
+        | React.FocusEvent<HTMLSelectElement | HTMLInputElement>
+        | React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
+    ) => {
+      const { name, value } = e.target;
+
       switch (name) {
         case 'port':
         case 'socks-port':
@@ -217,8 +218,6 @@ function ConfigImpl({
     fetchVersion('/version', apiConfig)
   );
 
-  const { t, i18n } = useTranslation();
-
   return (
     <div>
       <ContentHeader title={t('Config')} />
@@ -230,8 +229,7 @@ function ConfigImpl({
               <Input
                 name={f.key}
                 value={configState[f.key]}
-                onChange={handleInputOnChange}
-                // @ts-expect-error ts-migrate(2322) FIXME: Type '{ name: string; value: any; onChange: (e: an... Remove this comment to see the full error message
+                onChange={({ target: { name, value } }) => handleInputOnChange({ name, value })}
                 onBlur={handleInputOnBlur}
               />
             </div>
@@ -243,7 +241,7 @@ function ConfigImpl({
           <Select
             options={modeOptions}
             selected={configState.mode.toLowerCase()}
-            onChange={(e) => handleChangeValue({ name: 'mode', value: e.target.value })}
+            onChange={(e) => handleInputOnChange({ name: 'mode', value: e.target.value })}
           />
         </div>
 
@@ -252,7 +250,7 @@ function ConfigImpl({
           <Select
             options={logLeveOptions}
             selected={configState['log-level'].toLowerCase()}
-            onChange={(e) => handleChangeValue({ name: 'log-level', value: e.target.value })}
+            onChange={(e) => handleInputOnChange({ name: 'log-level', value: e.target.value })}
           />
         </div>
 
@@ -262,7 +260,9 @@ function ConfigImpl({
             <Switch
               name="allow-lan"
               checked={configState['allow-lan']}
-              onChange={(value: boolean) => handleChangeValue({ name: 'allow-lan', value: value })}
+              onChange={(value: boolean) =>
+                handleInputOnChange({ name: 'allow-lan', value: value })
+              }
             />
           </div>
         </div>
@@ -273,7 +273,9 @@ function ConfigImpl({
               <Switch
                 name="sniffing"
                 checked={configState['sniffing']}
-                onChange={(value: boolean) => handleChangeValue({ name: 'sniffing', value: value })}
+                onChange={(value: boolean) =>
+                  handleInputOnChange({ name: 'sniffing', value: value })
+                }
               />
             </div>
           </div>
@@ -290,7 +292,9 @@ function ConfigImpl({
               <div className={s0.wrapSwitch}>
                 <Switch
                   checked={configState['tun']?.enable}
-                  onChange={(value: boolean) => handleChangeValue({ name: 'enable', value: value })}
+                  onChange={(value: boolean) =>
+                    handleInputOnChange({ name: 'enable', value: value })
+                  }
                 />
               </div>
             </div>
@@ -299,7 +303,7 @@ function ConfigImpl({
               <Select
                 options={tunStackOptions}
                 selected={configState.tun?.stack?.toLowerCase()}
-                onChange={(e) => handleChangeValue({ name: 'stack', value: e.target.value })}
+                onChange={(e) => handleInputOnChange({ name: 'stack', value: e.target.value })}
               />
             </div>
             <div>
@@ -314,7 +318,7 @@ function ConfigImpl({
               <div className={s0.label}>Interface Name</div>
               <Input
                 name="interface name"
-                value={configState['interface-name']}
+                value={configState['interface-name'] || ''}
                 onChange={handleInputOnBlur}
               />
             </div>

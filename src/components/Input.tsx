@@ -4,15 +4,7 @@ import s0 from './Input.module.scss';
 
 const { useState, useRef, useEffect, useCallback } = React;
 
-type InputProps = {
-  value?: string | number;
-  type?: string;
-  onChange?: (...args: any[]) => any;
-  name?: string;
-  placeholder?: string;
-};
-
-export default function Input(props: InputProps) {
+export default function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input className={s0.input} {...props} />;
 }
 
