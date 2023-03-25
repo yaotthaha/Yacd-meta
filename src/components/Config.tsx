@@ -15,8 +15,10 @@ import {
   flushFakeIPPool,
   getConfigs,
   reloadConfigFile,
+  restartCore,
   updateConfigs,
   updateGeoDatabasesFile,
+  upgradeCore,
 } from '../store/configs';
 import { openModal } from '../store/modals';
 import Button from './Button';
@@ -206,6 +208,14 @@ function ConfigImpl({
     dispatch(reloadConfigFile(apiConfig));
   }, [apiConfig, dispatch]);
 
+  const handleRestartCore = useCallback(() => {
+    dispatch(restartCore(apiConfig));
+  }, [apiConfig, dispatch]);
+
+  const handleUpgradeCore = useCallback(() => {
+    dispatch(upgradeCore(apiConfig));
+  }, [apiConfig, dispatch]);
+
   const handleUpdateGeoDatabasesFile = useCallback(() => {
     dispatch(updateGeoDatabasesFile(apiConfig));
   }, [apiConfig, dispatch]);
@@ -333,6 +343,22 @@ function ConfigImpl({
                 start={<RotateCw size={16} />}
                 label={t('reload_config_file')}
                 onClick={handleReloadConfigFile}
+              />
+            </div>
+            <div>
+              <div className={s0.label}>Restart</div>
+              <Button
+                start={<RotateCw size={16} />}
+                label={t('restart_core')}
+                onClick={handleRestartCore}
+              />
+            </div>
+            <div>
+              <div className={s0.label}>Upgrade</div>
+              <Button
+                start={<RotateCw size={16} />}
+                label={t('upgrade_core')}
+                onClick={handleUpgradeCore}
               />
             </div>
             <div>

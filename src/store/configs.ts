@@ -115,6 +115,51 @@ export function reloadConfigFile(apiConfig: ClashAPIConfig) {
   };
 }
 
+export function restartCore(apiConfig: ClashAPIConfig) {
+  return async (dispatch: DispatchFn) => {
+    configsAPI
+      .restartCore(apiConfig)
+      .then(
+        (res) => {
+          if (res.ok === false) {
+            // eslint-disable-next-line no-console
+            console.log('Error restart core', res.statusText);
+          }
+        },
+        (err) => {
+          // eslint-disable-next-line no-console
+          console.log('Error restart core', err);
+          throw err;
+        }
+      )
+      .then(() => {
+        dispatch(fetchConfigs(apiConfig));
+      });
+  };
+}
+
+export function upgradeCore(apiConfig: ClashAPIConfig) {
+  return async (dispatch: DispatchFn) => {
+    configsAPI
+      .upgradeCore(apiConfig)
+      .then(
+        (res) => {
+          if (res.ok === false) {
+            // eslint-disable-next-line no-console
+            console.log('Error upgrade core', res.statusText);
+          }
+        },
+        (err) => {
+          // eslint-disable-next-line no-console
+          console.log('Error upgrade core', err);
+          throw err;
+        }
+      )
+      .then(() => {
+        dispatch(fetchConfigs(apiConfig));
+      });
+  };
+}
 export function updateGeoDatabasesFile(apiConfig: ClashAPIConfig) {
   return async (dispatch: DispatchFn) => {
     configsAPI
