@@ -346,22 +346,6 @@ function ConfigImpl({
               />
             </div>
             <div>
-              <div className={s0.label}>Restart</div>
-              <Button
-                start={<RotateCw size={16} />}
-                label={t('restart_core')}
-                onClick={handleRestartCore}
-              />
-            </div>
-            <div>
-              <div className={s0.label}>Upgrade</div>
-              <Button
-                start={<RotateCw size={16} />}
-                label={t('upgrade_core')}
-                onClick={handleUpgradeCore}
-              />
-            </div>
-            <div>
               <div className={s0.label}>GEO Databases</div>
               <Button
                 start={<DownloadCloud size={16} />}
@@ -375,6 +359,22 @@ function ConfigImpl({
                 start={<Trash2 size={16} />}
                 label={t('flush_fake_ip_pool')}
                 onClick={handleFlushFakeIPPool}
+              />
+            </div>
+            <div>
+              <div className={s0.label}>Restart</div>
+              <Button
+                start={<RotateCw size={16} />}
+                label={t('restart_core')}
+                onClick={handleRestartCore}
+              />
+            </div>
+            <div>
+              <div className={s0.label}>⚠️ Upgrade ⚠️</div>
+              <Button
+                start={<RotateCw size={16} />}
+                label={t('upgrade_core')}
+                onClick={handleUpgradeCore}
               />
             </div>
           </div>

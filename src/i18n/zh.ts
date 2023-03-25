@@ -57,4 +57,6 @@ export const data = {
   c_source: '来源',
   c_destination_ip: '目标IP',
   c_type: '类型',
+  restart_core: '重启 clash 核心',
+  upgrade_core: '更新 Alpha 核心',
 };
