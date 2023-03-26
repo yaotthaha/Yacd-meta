@@ -3,6 +3,11 @@
 @import '@fontsource/roboto-mono/latin-400.css';
 @import 'modern-normalize/modern-normalize.css';
 
+@font-face {
+  font-family: 'Twemoji Mozilla';
+  src: url('../../assets/Twemoji_Mozilla.ttf') format('truetype');
+}
+
 .relative {
   position: relative;
 }
