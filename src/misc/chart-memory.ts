@@ -7,7 +7,7 @@ export const chartJSResource = createAsset(() => {
 
 export const commonDataSetProps = { borderWidth: 1, pointRadius: 0, tension: 0.2, fill: true };
 
-export const commonChartOptions: import('chart.js').ChartOptions<'line'> = {
+export const memoryChartOptions: import('chart.js').ChartOptions<'line'> = {
   responsive: true,
   maintainAspectRatio: true,
   plugins: {
@@ -27,9 +27,9 @@ export const commonChartOptions: import('chart.js').ChartOptions<'line'> = {
         dash: [3, 6],
       },
       ticks: {
-        maxTicksLimit: 5,
+        maxTicksLimit: 3,
         callback(value: number) {
-          return prettyBytes(value) + '/s ';
+          return prettyBytes(value);
         },
       },
     },
@@ -38,43 +38,27 @@ export const commonChartOptions: import('chart.js').ChartOptions<'line'> = {
 
 export const chartStyles = [
   {
-    down: {
-      backgroundColor: 'rgba(176, 209, 132, 0.8)',
-      borderColor: 'rgb(176, 209, 132)',
-    },
-    up: {
-      backgroundColor: 'rgba(181, 220, 231, 0.8)',
-      borderColor: 'rgb(181, 220, 231)',
+    inuse: {
+      backgroundColor: 'rgba(	116, 162, 249, 0.8)',
+      borderColor: 'rgb(116, 162, 249)',
     },
   },
   {
-    up: {
+    inuse: {
       backgroundColor: 'rgb(98, 190, 100)',
       borderColor: 'rgb(78,146,79)',
     },
-    down: {
-      backgroundColor: 'rgb(160, 230, 66)',
-      borderColor: 'rgb(110, 156, 44)',
-    },
   },
   {
-    up: {
+    inuse: {
       backgroundColor: 'rgba(94, 175, 223, 0.3)',
       borderColor: 'rgb(94, 175, 223)',
     },
-    down: {
-      backgroundColor: 'rgba(139, 227, 195, 0.3)',
-      borderColor: 'rgb(139, 227, 195)',
-    },
   },
   {
-    up: {
+    inuse: {
       backgroundColor: 'rgba(242, 174, 62, 0.3)',
       borderColor: 'rgb(242, 174, 62)',
-    },
-    down: {
-      backgroundColor: 'rgba(69, 154, 248, 0.3)',
-      borderColor: 'rgb(69, 154, 248)',
     },
   },
 ];

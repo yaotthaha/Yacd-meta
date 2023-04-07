@@ -11,6 +11,7 @@ export const data = {
   'Download Total': '下载总量',
   'Active Connections': '活动连接',
   'Memory Total': '内存用量',
+  Memory: '内存',
   'Pause Refresh': '暂停刷新',
   'Resume Refresh': '继续刷新',
   close_all_connections: '关闭所有连接',
