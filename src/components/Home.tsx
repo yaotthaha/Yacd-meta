@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import ContentHeader from './ContentHeader';
 import s0 from './Home.module.scss';
 import Loading from './Loading';
+import MemoryChart from './MemoryChart';
 import TrafficChart from './TrafficChart';
 import TrafficNow from './TrafficNow';
 
@@ -19,6 +20,7 @@ export default function Home() {
         <div className={s0.chart}>
           <Suspense fallback={<Loading height="200px" />}>
             <TrafficChart />
+            <MemoryChart />
           </Suspense>
         </div>
       </div>
