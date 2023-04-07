@@ -50,7 +50,7 @@ function ProxyGroupImpl({
   );
 
   const isSelectable = useMemo(
-    () => ['Selector', version.meta && 'Fallback'].includes(type),
+    () => ['Selector', version.meta && 'Fallback', version.meta && 'URLTest'].includes(type),
     [type, version.meta]
   );
 
