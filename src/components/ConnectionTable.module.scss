@@ -5,7 +5,7 @@
 }
 
 .th {
-  padding: 3% 0%;
+  padding: 3% 2px;
   height: 50px;
   background: var(--color-background);
   position: sticky;
@@ -24,7 +24,7 @@
 }
 
 .thdu {
-  padding: 3% 0%;
+  padding: 3% 2px;
   height: 50px;
   background: var(--color-background);
   position: sticky;
@@ -35,22 +35,28 @@
   vertical-align: middle;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
 
   &:hover {
     color: var(--color-text-highlight);
   }
 }
 
-.td {
-  /* 上边下边 | 左边右边 */
-  padding: 4% 2%;
-  font-size: 0.9em;
-  max-width: 14em;
-  min-width: 9em;
+.break {
   word-wrap: break-word;
   word-break: break-all;
+  align-items: center;
+  text-align: left;
+}
+
+.td {
+  /* 上边下边 | 左边右边 */
+  padding: 10px 2px;
+  font-size: 0.9em;
+  // max-width: 14em;
+  min-width: 9em;
   cursor: default;
+  align-items: center;
   text-align: left;
   vertical-align: middle;
   &:hover {
@@ -64,10 +70,9 @@
 }
 
 /* download upload td cells */
-.du {
+.center {
   min-width: 7em;
   text-align: center;
-  justify-content: space-around;
 }
 
 .sortIconContainer {
