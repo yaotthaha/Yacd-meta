@@ -74,7 +74,7 @@ function Table({ data }) {
             {headerGroup.headers.map((column, index) => (
               <div
                 {...column.getHeaderProps(column.getSortByToggleProps())}
-                className={index >= 5 && index < 10 ? s.thdu : s.th}
+                className={index == 0 || (index >= 5 && index < 10) ? s.thdu : s.th}
               >
                 <span>{t(column.render('Header'))}</span>
                 <span className={s.sortIconContainer}>
@@ -96,7 +96,7 @@ function Table({ data }) {
                     className={cx(
                       s.td,
                       i % 2 === 0 ? s.odd : false,
-                      j >= 5 && j < 10 ? s.du : true
+                      j == 0 || (j >= 5 && j < 10) ? s.du : true
                     )}
                   >
                     {renderCell(cell, locale)}
