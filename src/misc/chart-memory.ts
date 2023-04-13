@@ -45,8 +45,8 @@ export const chartStyles = [
   },
   {
     inuse: {
-      backgroundColor: 'rgb(98, 190, 100)',
-      borderColor: 'rgb(78,146,79)',
+      backgroundColor: 'rgba(245,78,162,0.6)',
+      borderColor: 'rgba(245,78,162,1)',
     },
   },
   {
