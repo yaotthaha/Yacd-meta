@@ -134,15 +134,23 @@ function formatConnectionDataItem(
   };
   return ret;
 }
-
-function modifyChains(chains): string {
-  let temp;
-  if (chains.length == 1) {
-    temp = chains;
-  } else {
-    temp = chains.pop() + ' / ' + chains.shift();
+function modifyChains(chains: string[]): string {
+  if (!Array.isArray(chains) || chains.length === 0) {
+    return '';
   }
-  return temp;
+
+  if (chains.length === 1) {
+    return chains[0];
+  }
+
+  //倒序
+  if (chains.length === 2) {
+    return chains[1] + ' / ' + chains[0];
+  }
+
+  const first = chains.pop();
+  const last = chains.shift();
+  return `${first} / ${last}`;
 }
 
 function renderTableOrPlaceholder(conns: FormattedConn[]) {
