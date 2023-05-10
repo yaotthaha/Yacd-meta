@@ -4,10 +4,10 @@
   flex-wrap: wrap;
 
   display: grid;
-  grid-template-columns: repeat(auto-fit, 140px);
-  grid-gap: 20px;
-  justify-content: space-around;
-  max-width: 1000px;
+  grid-template-columns: repeat(auto-fill, 160px);
+  grid-gap: 15px;
+  justify-content: center;
+  // max-width: 1000px;
 
   .sec {
     padding: 10px;
