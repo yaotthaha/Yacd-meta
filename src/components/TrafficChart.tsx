@@ -13,8 +13,18 @@ const { useMemo } = React;
 
 const chartWrapperStyle: React.CSSProperties = {
   // make chartjs chart responsive
+  justifySelf: 'center',
   position: 'relative',
-  maxWidth: 1000,
+  width: '100%',
+  height: '200px',
+  borderTop: '2px solid #424242',
+};
+
+const canvasWrapperStyle = {
+  width: '100%',
+  height: '100%',
+  padding: '10px',
+  backgroundColor: 'rgb(26 26 26)',
 };
 
 const mapState = (s: State) => ({
@@ -53,7 +63,7 @@ function TrafficChart({ apiConfig, selectedChartStyleIndex }) {
 
   return (
     <div style={chartWrapperStyle}>
-      <canvas id="trafficChart" />
+      <canvas id="trafficChart" style={canvasWrapperStyle} />
     </div>
   );
 }
