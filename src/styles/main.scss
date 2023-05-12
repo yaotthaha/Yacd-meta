@@ -101,6 +101,7 @@ body {
 @mixin dark {
   --color-background: #202020;
   --color-background2: rgba(32, 32, 32, 0.3);
+  --color-bg-chart: rgb(26 26 26);
   --color-bg-card: #2d2d2d;
   --card-hover-border-lightness: 30%;
   --color-text: #ddd;
@@ -131,6 +132,7 @@ body {
 @mixin light {
   --color-background: #eee;
   --color-background2: rgba(240, 240, 240, 0.3);
+  --color-bg-chart: white;
   --color-bg-card: #fafafa;
   --card-hover-border-lightness: 80%;
   --color-text: #222;
