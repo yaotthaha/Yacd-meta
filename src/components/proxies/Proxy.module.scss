@@ -36,7 +36,7 @@
     transition: transform 0.2s ease-in-out;
     cursor: pointer;
     &:hover {
-      border-color: hsl(0deg, 0%, var(--card-hover-border-lightness));
+      border-color: var(--card-hover-border-lightness);
     }
   }
 }
