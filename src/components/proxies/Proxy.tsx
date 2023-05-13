@@ -6,7 +6,7 @@ import { keyCodes } from '~/misc/keycode';
 import { getLatencyTestUrl } from '~/store/app';
 import { ProxyItem } from '~/store/types';
 
-import { getDelay, getProxies, NonProxyTypes } from '../../store/proxies';
+import { getDelay, getProxies } from '../../store/proxies';
 import { connect } from '../StateProvider';
 import s0 from './Proxy.module.scss';
 import { ProxyLatency } from './ProxyLatency';
@@ -52,12 +52,12 @@ function getProxyDotBackgroundColor(
   latency: {
     number?: number;
   },
-  proxyType: string,
+  // proxyType: string,
   httpsTest: boolean
 ) {
-  if (NonProxyTypes.indexOf(proxyType) > -1) {
-    return 'linear-gradient(135deg, white 15%, #999 15% 30%, white 30% 45%, #999 45% 60%, white 60% 75%, #999 75% 90%, white 90% 100%)';
-  }
+  // if (NonProxyTypes.indexOf(proxyType) > -1) {
+  //   return 'linear-gradient(135deg, white 15%, #999 15% 30%, white 30% 45%, #999 45% 60%, white 60% 75%, #999 75% 90%, white 90% 100%)';
+  // }
   return getLabelColor(latency, httpsTest);
 }
 
@@ -83,7 +83,7 @@ function ProxySmallImpl({
   onClick,
 }: ProxyProps) {
   const color = useMemo(
-    () => getProxyDotBackgroundColor(latency, proxy.type, httpsLatencyTest),
+    () => getProxyDotBackgroundColor(latency, httpsLatencyTest),
     [latency, proxy]
   );
   const title = useMemo(() => {
