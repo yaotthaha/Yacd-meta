@@ -3,9 +3,7 @@ import cx from 'clsx';
 import * as React from 'react';
 
 import { keyCodes } from '~/misc/keycode';
-import {
-  getLatencyTestUrl,
-} from '~/store/app';
+import { getLatencyTestUrl } from '~/store/app';
 import { ProxyItem } from '~/store/types';
 
 import { getDelay, getProxies, NonProxyTypes } from '../../store/proxies';
@@ -26,12 +24,14 @@ const colorMap = {
   na: '#909399',
 };
 
-function getLabelColor({
-  number,
-}: {
-  number?: number;
-} = {},
-  httpsTest: boolean) {
+function getLabelColor(
+  {
+    number,
+  }: {
+    number?: number;
+  } = {},
+  httpsTest: boolean
+) {
   const delayMap = {
     good: httpsTest ? 800 : 200,
     normal: httpsTest ? 1500 : 500,
@@ -53,7 +53,7 @@ function getProxyDotBackgroundColor(
     number?: number;
   },
   proxyType: string,
-  httpsTest: boolean,
+  httpsTest: boolean
 ) {
   if (NonProxyTypes.indexOf(proxyType) > -1) {
     return 'linear-gradient(135deg, white 15%, #999 15% 30%, white 30% 45%, #999 45% 60%, white 60% 75%, #999 75% 90%, white 90% 100%)';
@@ -66,15 +66,26 @@ type ProxyProps = {
   now?: boolean;
   proxy: ProxyItem;
   latency: any;
-  httpsLatencyTest: boolean,
+  httpsLatencyTest: boolean;
   isSelectable?: boolean;
   udp: boolean;
   tfo: boolean;
   onClick?: (proxyName: string) => unknown;
 };
 
-function ProxySmallImpl({ now, name, proxy, latency, httpsLatencyTest, isSelectable, onClick }: ProxyProps) {
-  const color = useMemo(() => getProxyDotBackgroundColor(latency, proxy.type, httpsLatencyTest), [latency, proxy]);
+function ProxySmallImpl({
+  now,
+  name,
+  proxy,
+  latency,
+  httpsLatencyTest,
+  isSelectable,
+  onClick,
+}: ProxyProps) {
+  const color = useMemo(
+    () => getProxyDotBackgroundColor(latency, proxy.type, httpsLatencyTest),
+    [latency, proxy]
+  );
   const title = useMemo(() => {
     let ret = name;
     if (latency && typeof latency.number === 'number') {
@@ -139,7 +150,15 @@ function ProxyNameTooltip({ children, label, 'aria-label': ariaLabel }) {
   );
 }
 
-function ProxyImpl({ now, name, proxy, latency, httpsLatencyTest, isSelectable, onClick }: ProxyProps) {
+function ProxyImpl({
+  now,
+  name,
+  proxy,
+  latency,
+  httpsLatencyTest,
+  isSelectable,
+  onClick,
+}: ProxyProps) {
   const color = useMemo(() => getLabelColor(latency, httpsLatencyTest), [latency]);
   const doSelect = React.useCallback(() => {
     isSelectable && onClick && onClick(name);
@@ -196,14 +215,17 @@ function ProxyImpl({ now, name, proxy, latency, httpsLatencyTest, isSelectable, 
         <ProxyNameTooltip label={name} aria-label={`proxy name: ${name}`}>
           <span>{name}</span>
         </ProxyNameTooltip>
-        <span className={s0.proxyType} style={{ paddingLeft: 4, opacity: now ? 0.6 : 0.2 }}>
+        <span className={s0.proxyType} style={{ paddingLeft: 4, opacity: 1.0, color: '#51A8DD' }}>
           {formatUdpType(proxy.udp, proxy.xudp)}
         </span>
       </div>
 
       <div className={s0.row}>
         <div className={s0.row}>
-          <span className={s0.proxyType} style={{ paddingRight: 4, opacity: now ? 0.6 : 0.2 }}>
+          <span
+            className={s0.proxyType}
+            style={{ paddingRight: 4, opacity: 1.0, color: '#F596AA' }}
+          >
             {formatProxyType(proxy.type)}
           </span>
 
