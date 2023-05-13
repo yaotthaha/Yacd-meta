@@ -215,7 +215,7 @@ function ProxyImpl({
         <ProxyNameTooltip label={name} aria-label={`proxy name: ${name}`}>
           <span>{name}</span>
         </ProxyNameTooltip>
-        <span className={s0.proxyType} style={{ paddingLeft: 4, opacity: 0.4, color: '#51A8DD' }}>
+        <span className={s0.proxyType} style={{ paddingLeft: 4, opacity: 0.6, color: '#51A8DD' }}>
           {formatUdpType(proxy.udp, proxy.xudp)}
         </span>
       </div>
@@ -224,7 +224,7 @@ function ProxyImpl({
         <div className={s0.row}>
           <span
             className={s0.proxyType}
-            style={{ paddingRight: 4, opacity: 0.4, color: '#F596AA' }}
+            style={{ paddingRight: 4, opacity: 0.6, color: '#F596AA' }}
           >
             {formatProxyType(proxy.type)}
           </span>
