@@ -113,7 +113,7 @@ function ProxySmallImpl({
       className={cx(s0.proxySmall, {
         [s0.selectable]: isSelectable,
       })}
-      style={{ background: color, scale: now ? '1.6' : '1' }}
+      style={{ background: color, scale: now ? '1.2' : '1' }}
       onClick={doSelect}
       onKeyDown={handleKeyDown}
       role={isSelectable ? 'menuitem' : ''}
@@ -215,7 +215,7 @@ function ProxyImpl({
         <ProxyNameTooltip label={name} aria-label={`proxy name: ${name}`}>
           <span>{name}</span>
         </ProxyNameTooltip>
-        <span className={s0.proxyType} style={{ paddingLeft: 4, opacity: 1.0, color: '#51A8DD' }}>
+        <span className={s0.proxyType} style={{ paddingLeft: 4, opacity: 0.4, color: '#51A8DD' }}>
           {formatUdpType(proxy.udp, proxy.xudp)}
         </span>
       </div>
@@ -224,7 +224,7 @@ function ProxyImpl({
         <div className={s0.row}>
           <span
             className={s0.proxyType}
-            style={{ paddingRight: 4, opacity: 1.0, color: '#F596AA' }}
+            style={{ paddingRight: 4, opacity: 0.4, color: '#F596AA' }}
           >
             {formatProxyType(proxy.type)}
           </span>

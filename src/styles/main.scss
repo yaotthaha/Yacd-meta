@@ -118,7 +118,7 @@ body {
   --color-separator: #333;
   --color-btn-bg: #232323;
   --color-btn-fg: #bebebe;
-  --color-bg-proxy: #24292f;
+  --color-bg-proxy: #202020;
   --color-row-odd: #282828;
   --bg-log-info-tag: #454545;
   --bg-modal: #1f1f20;
@@ -143,7 +143,10 @@ body {
   --color-text-highlight: #040404;
   --color-bg-sidebar: #cbcbcb2f;
   --color-sb-active-row-bg: #005caf;
-  --color-sb-active-row-font: #dfdbdb;
+  --color-sb-active-row-font: #040404;
+  @media only screen and (min-width: 600px) {
+    --color-sb-active-row-font: #eee;
+  }
   --color-input-bg: #f0f0f0;
   --color-input-border: #c0c0c0;
   --color-toggle-bg: #ffffff80;
