@@ -104,9 +104,9 @@ function Table({ data }) {
                     {...cell.getCellProps()}
                     className={cx(
                       s.td,
-                      i % 2 == 0 ? s.odd : false,
-                      j == 0 || (j >= 5 && j < 10) ? s.center : true,
-                      j == 2 || j == 4 ? s.break : true
+                      i % 2 === 0 ? s.odd : false,
+                      j == 0 || (j >= 5 && j < 10) ? s.center : true
+                      // j ==1 ? s.break : true
                     )}
                   >
                     {renderCell(cell, locale)}
