@@ -43,18 +43,17 @@
 }
 
 .break {
+  /* 上边下边 | 左边右边 */
+  max-width: 13em;
+  min-width: 9em;
   word-wrap: break-word;
   word-break: break-all;
-  align-items: center;
-  text-align: left;
 }
 
 .td {
   /* 上边下边 | 左边右边 */
   padding: 10px 2px;
   font-size: 0.9em;
-  // max-width: 14em;
-  min-width: 9em;
   cursor: default;
   align-items: center;
   text-align: left;
