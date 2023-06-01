@@ -30,6 +30,7 @@ export const data = {
   order_name_asc: '按名稱字母順序排序 (A-Z)',
   order_name_desc: '按名稱字母順序排序 (Z-A)',
   Connections: '連線',
+  current_backend: '當前後端',
   Active: '活動中',
   Closed: '已斷線',
   switch_theme: '切換主題',
