@@ -64,4 +64,7 @@ export const data = {
   c_type: '类型',
   restart_core: '重启 clash 核心',
   upgrade_core: '更新 Alpha 核心',
+  close_all_confirm: '确定关闭所有连接？',
+  close_all_confirm_yes: '确定',
+  close_all_confirm_no: '取消',
 };
