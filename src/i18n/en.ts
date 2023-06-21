@@ -68,4 +68,8 @@ export const data = {
   close_all_confirm_no: 'No',
   manage_column: 'Custom columns',
   reset_column: 'Reset columns',
+  device_name: 'Device Tag',
+  delete: 'Delete',
+  add_tag: 'Add tag',
+  client_tag: 'Client tags',
 };
