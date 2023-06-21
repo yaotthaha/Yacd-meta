@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 
 import { ConnectionItem } from '~/api/connections';
+import BaseModal from '~/components/shared/BaseModal';
 import { State } from '~/store/types';
 
 import * as connAPI from '../api/connections';
@@ -21,6 +22,10 @@ import { connect } from './StateProvider';
 import SvgYacd from './SvgYacd';
 
 const { useEffect, useState, useRef, useCallback } = React;
+
+const sourceMapInit = localStorage.getItem('sourceMap')
+  ? JSON.parse(localStorage.getItem('sourceMap'))
+  : [];
 
 const paddingBottom = 30;
 
@@ -89,14 +94,35 @@ function filterConns(conns: FormattedConn[], keyword: string, sourceIp: string) 
   return result;
 }
 
-function getConnIpList(conns: FormattedConn[]) {
-  return Array.from(new Set(conns.map((x) => x.sourceIP))).sort();
+function getConnIpList(conns: FormattedConn[], sourceMap: { reg: string; name: string }[]) {
+  return Array.from(new Set(conns.map((x) => x.sourceIP)))
+    .sort()
+    .map((value) => {
+      return getNameFromSource(value, sourceMap);
+    });
+}
+
+function getNameFromSource(source: string, sourceMap: { reg: string; name: string }[]): string {
+  let sourceName = source;
+
+  sourceMap.forEach(({ reg, name }) => {
+    if (!reg) return;
+
+    const regExp = new RegExp(reg, 'g');
+
+    if (regExp.test(source) && name) {
+      sourceName = name;
+    }
+  });
+
+  return sourceName;
 }
 
 function formatConnectionDataItem(
   i: ConnectionItem,
   prevKv: Record<string, { upload: number; download: number }>,
-  now: number
+  now: number,
+  sourceMap: { reg: string; name: string }[]
 ): FormattedConn {
   const { id, metadata, upload, download, start, chains, rule, rulePayload } = i;
   const {
@@ -115,6 +141,8 @@ function formatConnectionDataItem(
   let host2 = host;
   if (host2 === '') host2 = destinationIP;
   const prev = prevKv[id];
+  const source = `${sourceIP}:${sourcePort}`;
+
   const ret = {
     id,
     upload,
@@ -126,7 +154,7 @@ function formatConnectionDataItem(
     host: `${host2}:${destinationPort}`,
     sniffHost: sniffHost ? sniffHost : '-',
     type: `${type}(${network})`,
-    source: `${sourceIP}:${sourcePort}`,
+    source: getNameFromSource(source, sourceMap),
     downloadSpeedCurr: download - (prev ? prev.download : 0),
     uploadSpeedCurr: upload - (prev ? prev.upload : 0),
     process: process ? process : '-',
@@ -168,6 +196,8 @@ function ConnQty({ qty }) {
 }
 
 function Conn({ apiConfig }) {
+  const [sourceMapModal, setSourceMapModal] = useState(false);
+  const [sourceMap, setSourceMap] = useState(sourceMapInit);
   const [refContainer, containerHeight] = useRemainingViewPortHeight();
 
   const [conns, setConns] = useState([]);
@@ -179,7 +209,7 @@ function Conn({ apiConfig }) {
   const filteredConns = filterConns(conns, filterKeyword, filterSourceIpStr);
   const filteredClosedConns = filterConns(closedConns, filterKeyword, filterSourceIpStr);
 
-  const connIpSet = getConnIpList(conns);
+  const connIpSet = getConnIpList(conns, sourceMap);
   // const ClosedConnIpSet = getConnIpList(closedConns);
 
   const [isCloseAllModalOpen, setIsCloseAllModalOpen] = useState(false);
@@ -199,7 +229,7 @@ function Conn({ apiConfig }) {
       const prevConnsKv = arrayToIdKv(prevConnsRef.current);
       const now = Date.now();
       const x = connections.map((c: ConnectionItem) =>
-        formatConnectionDataItem(c, prevConnsKv, now)
+        formatConnectionDataItem(c, prevConnsKv, now, sourceMap)
       );
       const closed = [];
       for (const c of prevConnsRef.current) {
@@ -232,9 +262,58 @@ function Conn({ apiConfig }) {
   }, [apiConfig, read, reConnectCount, setReConnectCount]);
 
   const { t } = useTranslation();
+  const openModalSource = () => {
+    setSourceMapModal(true);
+  };
+  const closeModalSource = () => {
+    localStorage.setItem('sourceMap', JSON.stringify(sourceMap));
+    setSourceMapModal(false);
+  };
+  const setSource = (key, index, val) => {
+    sourceMap[index][key] = val;
+    setSourceMap(Array.from(sourceMap));
+  };
 
   return (
     <div>
+      <BaseModal isOpen={sourceMapModal} onRequestClose={closeModalSource}>
+        <table>
+          <thead>
+            <tr>
+              <th>源IP</th>
+              <th>设备名</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sourceMap.map((source, index) => (
+              <tr key={`${index}`}>
+                <td>
+                  <input
+                    type="text"
+                    name="reg"
+                    autoComplete="off"
+                    value={source.reg}
+                    onChange={(e) => setSource('reg', index, e.target.value)}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    name="name"
+                    autoComplete="off"
+                    value={source.name}
+                    onChange={(e) => setSource('name', index, e.target.value)}
+                  />
+                </td>
+                <td>
+                  <Button onClick={() => sourceMap.splice(index, 1)}>删除</Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+          <Button onClick={() => sourceMap.push({ reg: '', name: '' })}>添加规则</Button>
+        </table>
+      </BaseModal>
       <div className={s.header}>
         <ContentHeader title={t('Connections')} />
         <div className={s.inputWrapper}>
@@ -274,6 +353,7 @@ function Conn({ apiConfig }) {
           </TabList>
 
           <div>
+            <Button onClick={openModalSource}>IP地址备注</Button>
             <Button onClick={() => setFilterSourceIpStr('')} kind="minimal">
               {t('All')}
             </Button>
