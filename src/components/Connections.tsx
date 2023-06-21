@@ -111,7 +111,7 @@ function getNameFromSource(source: string, sourceMap: { reg: string; name: strin
     const regExp = new RegExp(reg, 'g');
 
     if (regExp.test(source) && name) {
-      sourceName = name;
+      sourceName = `${name}(${source})`;
     }
   });
 
@@ -280,8 +280,8 @@ function Conn({ apiConfig }) {
         <table>
           <thead>
             <tr>
-              <th>源IP</th>
-              <th>设备名</th>
+              <th>{t('c_source')}</th>
+              <th>{t('device_name')}</th>
             </tr>
           </thead>
           <tbody>
@@ -306,12 +306,12 @@ function Conn({ apiConfig }) {
                   />
                 </td>
                 <td>
-                  <Button onClick={() => sourceMap.splice(index, 1)}>删除</Button>
+                  <Button onClick={() => sourceMap.splice(index, 1)}>{t('delete')}</Button>
                 </td>
               </tr>
             ))}
           </tbody>
-          <Button onClick={() => sourceMap.push({ reg: '', name: '' })}>添加规则</Button>
+          <Button onClick={() => sourceMap.push({ reg: '', name: '' })}>{t('add_tag')}</Button>
         </table>
       </BaseModal>
       <div className={s.header}>
@@ -353,7 +353,7 @@ function Conn({ apiConfig }) {
           </TabList>
 
           <div>
-            <Button onClick={openModalSource}>IP地址备注</Button>
+            <Button onClick={openModalSource}>{t('client_tag')}</Button>
             <Button onClick={() => setFilterSourceIpStr('')} kind="minimal">
               {t('All')}
             </Button>
