@@ -263,9 +263,16 @@ function Conn({ apiConfig }) {
 
   const { t } = useTranslation();
   const openModalSource = () => {
+    if (sourceMap.length === 0) {
+      sourceMap.push({
+        reg: '',
+        name: '',
+      });
+    }
     setSourceMapModal(true);
   };
   const closeModalSource = () => {
+    setSourceMap(sourceMap.filter((i) => i.reg || i.name));
     localStorage.setItem('sourceMap', JSON.stringify(sourceMap));
     setSourceMapModal(false);
   };
@@ -311,8 +318,8 @@ function Conn({ apiConfig }) {
               </tr>
             ))}
           </tbody>
-          <Button onClick={() => sourceMap.push({ reg: '', name: '' })}>{t('add_tag')}</Button>
         </table>
+        <Button onClick={() => sourceMap.push({ reg: '', name: '' })}>{t('add_tag')}</Button>
       </BaseModal>
       <div className={s.header}>
         <ContentHeader title={t('Connections')} />
