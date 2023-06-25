@@ -72,4 +72,5 @@ export const data = {
   delete: 'Delete',
   add_tag: 'Add tag',
   client_tag: 'Client tags',
+  sourceip_tip: "Prefix with / for regular expressions, otherwise it's a complete match",
 };

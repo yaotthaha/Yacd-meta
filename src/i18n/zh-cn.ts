@@ -73,4 +73,5 @@ export const data = {
   delete: '删除',
   add_tag: '添加标签',
   client_tag: '客户端标签',
+  sourceip_tip: '/开头为正则，否则为全匹配',
 };

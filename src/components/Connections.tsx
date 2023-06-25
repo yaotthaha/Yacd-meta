@@ -102,16 +102,26 @@ function getConnIpList(conns: FormattedConn[], sourceMap: { reg: string; name: s
     });
 }
 
-function getNameFromSource(source: string, sourceMap: { reg: string; name: string }[]): string {
-  let sourceName = source;
+function getNameFromSource(
+  source: string,
+  sourceMap: { reg: string; name: string }[],
+  defaultVal?: string
+): string {
+  let sourceName = defaultVal ?? source;
 
   sourceMap.forEach(({ reg, name }) => {
     if (!reg) return;
 
-    const regExp = new RegExp(reg, 'g');
+    if (reg.startsWith('/')) {
+      const regExp = new RegExp(reg.replace('/', ''), 'g');
 
-    if (regExp.test(source) && name) {
-      sourceName = `${name}(${source})`;
+      if (regExp.test(source) && name) {
+        sourceName = `${name}(${source})`;
+      }
+    } else {
+      if (source === reg && name) {
+        sourceName = `${name}(${source})`;
+      }
     }
   });
 
@@ -154,7 +164,7 @@ function formatConnectionDataItem(
     host: `${host2}:${destinationPort}`,
     sniffHost: sniffHost ? sniffHost : '-',
     type: `${type}(${network})`,
-    source: getNameFromSource(source, sourceMap),
+    source: getNameFromSource(sourceIP, sourceMap, source),
     downloadSpeedCurr: download - (prev ? prev.download : 0),
     uploadSpeedCurr: upload - (prev ? prev.upload : 0),
     process: process ? process : '-',
@@ -319,7 +329,10 @@ function Conn({ apiConfig }) {
             ))}
           </tbody>
         </table>
-        <Button onClick={() => sourceMap.push({ reg: '', name: '' })}>{t('add_tag')}</Button>
+        <div>
+          <div>{t('sourceip_tip')}</div>
+          <Button onClick={() => sourceMap.push({ reg: '', name: '' })}>{t('add_tag')}</Button>
+        </div>
       </BaseModal>
       <div className={s.header}>
         <ContentHeader title={t('Connections')} />
