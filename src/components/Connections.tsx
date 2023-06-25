@@ -284,7 +284,7 @@ function Conn({ apiConfig }) {
   return (
     <div>
       <BaseModal isOpen={sourceMapModal} onRequestClose={closeModalSource}>
-        <table>
+        <table className={s.sourceipTable}>
           <thead>
             <tr>
               <th>{t('c_source')}</th>
