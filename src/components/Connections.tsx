@@ -1,7 +1,8 @@
 import './Connections.css';
 
 import React from 'react';
-import { Pause, Play, X as IconClose } from 'react-feather';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { Pause, Play, RefreshCcw, Settings, Tag, X as IconClose } from 'react-feather';
 import { useTranslation } from 'react-i18next';
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs';
 
@@ -20,12 +21,23 @@ import ModalCloseAllConnections from './ModalCloseAllConnections';
 import { Action, Fab, position as fabPosition } from './shared/Fab';
 import { connect } from './StateProvider';
 import SvgYacd from './SvgYacd';
+import Switch from './SwitchThemed';
 
 const { useEffect, useState, useRef, useCallback } = React;
 
 const sourceMapInit = localStorage.getItem('sourceMap')
   ? JSON.parse(localStorage.getItem('sourceMap'))
   : [];
+
+const getItemStyle = (isDragging, draggableStyle) => {
+  return {
+    ...draggableStyle,
+    ...(isDragging && {
+      background: 'transparent',
+      transform: draggableStyle.transform, // modal基于transform会造成偏移
+    }),
+  };
+};
 
 const paddingBottom = 30;
 
@@ -191,9 +203,9 @@ function modifyChains(chains: string[]): string {
   return `${first} -> ${last}`;
 }
 
-function renderTableOrPlaceholder(conns: FormattedConn[]) {
+function renderTableOrPlaceholder(columns, hiddenColumns, conns: FormattedConn[]) {
   return conns.length > 0 ? (
-    <ConnectionTable data={conns} />
+    <ConnectionTable data={conns} columns={columns} hiddenColumns={hiddenColumns} />
   ) : (
     <div className={s.placeHolder}>
       <SvgYacd width={200} height={200} c1="var(--color-text)" />
@@ -205,7 +217,76 @@ function ConnQty({ qty }) {
   return qty < 100 ? '' + qty : '99+';
 }
 
+const sortDescFirst = true;
+
+const hiddenColumnsOrigin = JSON.stringify(['id']);
+const columnsOrigin = JSON.stringify([
+  { accessor: 'id', show: false },
+  { Header: 'c_type', accessor: 'type' },
+  { Header: 'c_process', accessor: 'process' },
+  { Header: 'c_host', accessor: 'host' },
+  { Header: 'c_rule', accessor: 'rule' },
+  { Header: 'c_chains', accessor: 'chains' },
+  { Header: 'c_time', accessor: 'start' },
+  { Header: 'c_dl_speed', accessor: 'downloadSpeedCurr', sortDescFirst },
+  { Header: 'c_ul_speed', accessor: 'uploadSpeedCurr', sortDescFirst },
+  { Header: 'c_dl', accessor: 'download', sortDescFirst },
+  { Header: 'c_ul', accessor: 'upload', sortDescFirst },
+  { Header: 'c_source', accessor: 'source' },
+  { Header: 'c_destination_ip', accessor: 'destinationIP' },
+  { Header: 'c_sni', accessor: 'sniffHost' },
+]);
+
+const savedHiddenColumns = localStorage.getItem('hiddenColumns');
+const savedColumns = localStorage.getItem('columns');
+
+const hiddenColumnsInit = savedHiddenColumns
+  ? JSON.parse(savedHiddenColumns)
+  : JSON.parse(hiddenColumnsOrigin);
+const columnsInit = savedColumns ? JSON.parse(savedColumns) : JSON.parse(columnsOrigin);
+
 function Conn({ apiConfig }) {
+  const [showModalColumn, setModalColumn] = useState(false);
+  const [hiddenColumns, setHiddenColumns] = useState(hiddenColumnsInit);
+  const [columns, setColumns] = useState(columnsInit);
+
+  const closeModalColumn = () => {
+    setModalColumn(false);
+  };
+
+  const onShowChange = (column, val) => {
+    if (!val) {
+      hiddenColumns.push(column.accessor);
+    } else {
+      const idx = hiddenColumns.indexOf(column.accessor);
+
+      hiddenColumns.splice(idx, 1);
+    }
+    setHiddenColumns(Array.from(hiddenColumns));
+    localStorage.setItem('hiddenColumns', JSON.stringify(hiddenColumns));
+  };
+
+  const resetColumns = () => {
+    hiddenColumns.splice(0, hiddenColumns.length);
+    hiddenColumns.push('id');
+    setHiddenColumns(hiddenColumns);
+    setColumns(JSON.parse(columnsOrigin));
+    localStorage.removeItem('hiddenColumns');
+    localStorage.removeItem('columns');
+  };
+
+  const onDragEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const items = Array.from(columns);
+    const [removed] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, removed);
+    setColumns(items);
+    localStorage.setItem('columns', JSON.stringify(items));
+  };
+
   const [sourceMapModal, setSourceMapModal] = useState(false);
   const [sourceMap, setSourceMap] = useState(sourceMapInit);
   const [refContainer, containerHeight] = useRemainingViewPortHeight();
@@ -293,6 +374,54 @@ function Conn({ apiConfig }) {
 
   return (
     <div>
+      <BaseModal isOpen={showModalColumn} onRequestClose={closeModalColumn}>
+        <div>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="droppable-modal">
+              {(provided) => (
+                <div {...provided.droppableProps} ref={provided.innerRef}>
+                  {columns
+                    .filter((i) => i.accessor !== 'id')
+                    .map((column) => {
+                      const show = !hiddenColumns.includes(column.accessor);
+
+                      return (
+                        <Draggable
+                          key={column.accessor}
+                          draggableId={column.accessor}
+                          index={columns.findIndex((a) => a.accessor === column.accessor)}
+                        >
+                          {(provided, snapshot) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              className={s.columnManagerRow}
+                              style={getItemStyle(
+                                snapshot.isDragging,
+                                provided.draggableProps.style
+                              )}
+                            >
+                              <span>{t(column.Header)}</span>
+                              <div style={{ transform: 'scale(0.7)', height: '20px' }}>
+                                <Switch
+                                  size="mini"
+                                  checked={show}
+                                  onChange={(val) => onShowChange(column, val)}
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </Draggable>
+                      );
+                    })}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </div>
+      </BaseModal>
       <BaseModal isOpen={sourceMapModal} onRequestClose={closeModalSource}>
         <table className={s.sourceipTable}>
           <thead>
@@ -373,7 +502,6 @@ function Conn({ apiConfig }) {
           </TabList>
 
           <div className={s.sourceipContainer}>
-            <Button onClick={openModalSource}>{t('client_tag')}</Button>
             <Button onClick={() => setFilterSourceIpStr('')} kind="minimal">
               {t('All')}
             </Button>
@@ -397,7 +525,7 @@ function Conn({ apiConfig }) {
             }}
           >
             <TabPanel>
-              {renderTableOrPlaceholder(filteredConns)}
+              {renderTableOrPlaceholder(columns, hiddenColumns, filteredConns)}
               <Fab
                 icon={isRefreshPaused ? <Play size={16} /> : <Pause size={16} />}
                 mainButtonStyles={isRefreshPaused ? { background: '#e74c3c' } : {}}
@@ -408,9 +536,33 @@ function Conn({ apiConfig }) {
                 <Action text={t('close_all_connections')} onClick={openCloseAllModal}>
                   <IconClose size={10} />
                 </Action>
+                <Action text={t('manage_column')} onClick={() => setModalColumn(true)}>
+                  <Settings size={10} />
+                </Action>
+                <Action text={t('reset_column')} onClick={resetColumns}>
+                  <RefreshCcw size={10} />
+                </Action>
+                <Action text={t('client_tag')} onClick={openModalSource}>
+                  <Tag size={10} />
+                </Action>
               </Fab>
             </TabPanel>
-            <TabPanel>{renderTableOrPlaceholder(filteredClosedConns)}</TabPanel>
+            <TabPanel>
+              {renderTableOrPlaceholder(columns, hiddenColumns, filteredClosedConns)}
+              <Fab
+                icon={<Settings size={16} />}
+                style={fabPosition}
+                text={t('manage_column')}
+                onClick={() => setModalColumn(true)}
+              >
+                <Action text={t('reset_column')} onClick={resetColumns}>
+                  <RefreshCcw size={10} />
+                </Action>
+                <Action text={t('client_tag')} onClick={openModalSource}>
+                  <Tag size={10} />
+                </Action>
+              </Fab>
+            </TabPanel>
           </div>
         </div>
         <ModalCloseAllConnections
