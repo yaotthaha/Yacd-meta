@@ -73,4 +73,5 @@ export const data = {
   delete: '刪除',
   add_tag: '新增標籤',
   client_tag: '客戶端標籤',
+  sourceip_tip: '/開頭為正規表達式，否則為全面配對',
 };
