@@ -63,7 +63,7 @@ export const data = {
   c_source: '来源',
   c_destination_ip: '目标IP',
   c_type: '类型',
-  c_ctrl: '操作',
+  c_ctrl: '关闭',
   restart_core: '重启 clash 核心',
   upgrade_core: '更新 Alpha 核心',
   close_all_confirm: '确定关闭所有连接？',
