@@ -24,6 +24,7 @@ import { connect } from './StateProvider';
 import SvgYacd from './SvgYacd';
 
 const { useEffect, useState, useRef, useCallback } = React;
+const ALL_SOURCE_IP = 'ALL_SOURCE_IP';
 
 const sourceMapInit = localStorage.getItem('sourceMap')
   ? JSON.parse(localStorage.getItem('sourceMap'))
@@ -89,7 +90,7 @@ function filterConns(conns: FormattedConn[], keyword: string, sourceIp: string) 
       })
     );
   }
-  if (sourceIp !== '') {
+  if (sourceIp !== ALL_SOURCE_IP) {
     result = filterConnIps(result, sourceIp);
   }
 
@@ -268,14 +269,14 @@ function Conn({ apiConfig }) {
   const [closedConns, setClosedConns] = useState([]);
 
   const [filterKeyword, setFilterKeyword] = useState('');
-  const [filterSourceIpStr, setFilterSourceIpStr] = useState('');
+  const [filterSourceIpStr, setFilterSourceIpStr] = useState(ALL_SOURCE_IP);
 
   const filteredConns = filterConns(conns, filterKeyword, filterSourceIpStr);
   const filteredClosedConns = filterConns(closedConns, filterKeyword, filterSourceIpStr);
 
   const getConnIpList = (conns: FormattedConn[]) => {
     return [
-      ['', t('All')],
+      [ALL_SOURCE_IP, t('All')],
       ...Array.from(new Set(conns.map((x) => x.sourceIP)))
         .sort()
         .map((value) => {
